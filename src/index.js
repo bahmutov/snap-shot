@@ -6,6 +6,8 @@ const fs = require('fs')
 const read = fs.readFileSync
 const path = require('path')
 
+const shouldUpdate = Boolean(process.env.UPDATE)
+
 const cwd = process.cwd()
 const folder = path.join(cwd, '.snap-shot')
 if (!fs.existsSync(folder)) {
@@ -40,6 +42,12 @@ function getItsName ({file, line}) {
 function findStoredValue ({file, specName}) {
   const relativePath = path.relative(cwd, file)
   console.log('relativePath', relativePath)
+
+  if (shouldUpdate) {
+    // let the new value replace the current value
+    return
+  }
+
   if (!snapshots[relativePath]) {
     return
   }
@@ -61,7 +69,7 @@ function storeValue ({file, specName, value}) {
   console.log('saved', filename)
 }
 
-function snapshot (what) {
+function snapshot (what, update) {
   la(what !== undefined, 'cannot store undefined value')
 
   // TODO for multiple values inside same spec
@@ -84,7 +92,7 @@ function snapshot (what) {
   // perfect opportunity to use Maybe
   const storedValue = findStoredValue({file, specName})
   console.log('stored value', storedValue)
-  if (storedValue === undefined) {
+  if (update || storedValue === undefined) {
     storeValue({file, specName, value: what})
   } else {
     la(R.equals(what, storedValue), 'expected', storedValue, 'got', what)

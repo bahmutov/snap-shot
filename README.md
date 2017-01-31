@@ -53,6 +53,28 @@ $ mocha spec.js
     Error: expected 42 got 80
 ```
 
+**Note** `snap-shot` does not store or handle `undefined` values, since they
+are likely an edge case. If you disagree, open
+[an issue](https://github.com/bahmutov/snap-shot/issues) please.
+
+## Update snapshots
+
+To update all saved values, run with `UPDATE=1` environment variable.
+
+```sh
+$ UPDATE=1 mocha spec.js
+```
+
+To update snapshot inside a single test function, use second argument
+
+```js
+const snapshot = require('snap-shot')
+it('is 42', () => {
+  snapshot(80, true)
+})
+// snapshot file now has {"is 42": 80)
+```
+
 ## Related
 
 * [chai-jest-snapshot](https://github.com/suchipi/chai-jest-snapshot) if
