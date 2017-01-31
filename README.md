@@ -14,6 +14,13 @@ I like [Jest snapshot](https://facebook.github.io/jest/blog/2016/07/27/jest-14.h
 idea and want it without the rest of Jest testing framework. This module is
 JUST a single assertion method to be used in BDD frameworks (Mocha, Jasmine)
 
+Also, I really really really wanted to keep API as simple and as "smart"
+as possible. Thus `snap-shot` tries to find the surrounding unit test name
+by inspecting its call site
+(using [callsites](https://github.com/sindresorhus/callsites#readme))
+and parsing AST of the spec file
+(using [falafel](https://github.com/substack/node-falafel#readme)).
+
 ## Example
 
 Install: `npm install --save-dev snap-shot`
@@ -56,6 +63,25 @@ $ mocha spec.js
 **Note** `snap-shot` does not store or handle `undefined` values, since they
 are likely an edge case. If you disagree, open
 [an issue](https://github.com/bahmutov/snap-shot/issues) please.
+
+## Limitations
+
+* **single value per test** - I think the purpose of snapshots is to compare
+  large objects, and it makes less sense to have multiple comparisons per
+  tests. Split large tests into simpler "compute - assert"
+* **Node** - it might be possible to bundle this logic into browser bundle
+  but I haven't done this yet.
+
+## Jest
+
+You can use this assertion inside Jest tests too.
+
+```js
+const snapshot = require('snap-shot')
+test('my test', () => {
+  snapshot(myValue)
+})
+```
 
 ## Update snapshots
 
