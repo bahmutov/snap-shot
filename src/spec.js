@@ -17,6 +17,11 @@ describe('the number', () => {
   })
 })
 
+it('should not store undefined value', () => {
+  let value = 42
+  snapshot(value)
+})
+
 // Jest mock "test"
 const test = it
 test('jest test', () => {

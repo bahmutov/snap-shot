@@ -62,6 +62,8 @@ function findStoredValue ({file, specName}) {
 }
 
 function storeValue ({file, specName, value}) {
+  la(value !== undefined, 'cannot store undefined value')
+
   const relativePath = path.relative(cwd, file)
   console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
@@ -74,8 +76,6 @@ function storeValue ({file, specName, value}) {
 }
 
 function snapshot (what, update) {
-  la(what !== undefined, 'cannot store undefined value')
-
   // TODO for multiple values inside same spec
   // we could use callsites[0] object
   const callsite = callsites()[1]
