@@ -21,6 +21,10 @@ if (fs.existsSync(filename)) {
   console.log('loaded snapshots from', filename)
 }
 
+function isTestFunction (name) {
+  return ['it', 'test'].includes(name)
+}
+
 function getItsName ({file, line}) {
   // TODO can be cached efficiently
   const source = read(file, 'utf8')
@@ -28,7 +32,7 @@ function getItsName ({file, line}) {
   const options = {locations: true}
   falafel(source, options, node => {
     if (node.type === 'CallExpression' &&
-      node.callee.name === 'it' &&
+      isTestFunction(node.callee.name) &&
       node.loc.start.line < line &&
       node.loc.end.line > line) {
       // console.log('found it')
