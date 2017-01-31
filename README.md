@@ -8,15 +8,35 @@
 [![semantic-release][semantic-image] ][semantic-url]
 [![js-standard-style][standard-image]][standard-url]
 
+## Why
+
+I like [Jest snapshot](https://facebook.github.io/jest/blog/2016/07/27/jest-14.html)
+idea and want it without the rest of Jest testing framework. This module is
+JUST a single assertion method to be used in BDD frameworks (Mocha, Jasmine)
+
+## Example
+
+```js
+const snapshots = require('snap-shots')
+it('is 42', () => {
+  snapshots(42)
+})
+```
+
+Run it first time `mocha spec.js`. This will create snapshots JSON values file
+inside `.snap-shots`.
+
+```sh
+cat .snap-shots/.snap-shots.json
+```
+
 ### Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2017
 
-
 * [@bahmutov](https://twitter.com/bahmutov)
 * [glebbahmutov.com](http://glebbahmutov.com)
 * [blog](http://glebbahmutov.com/blog)
-
 
 License: MIT - do anything with the code, but don't blame me if it does not work.
 

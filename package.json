@@ -1,9 +1,9 @@
 {
-  "name": "snap-shots",
+  "name": "snap-shot",
   "description": "Jest-like snapshot feature for the rest of us",
   "version": "1.0.0",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
-  "bugs": "https://github.com/bahmutov/snap-shots/issues",
+  "bugs": "https://github.com/bahmutov/snap-shot/issues",
   "config": {
     "pre-git": {
       "commit-msg": "simple",
@@ -30,7 +30,7 @@
     "src/*.js",
     "!src/*spec.js"
   ],
-  "homepage": "https://github.com/bahmutov/snap-shots#readme",
+  "homepage": "https://github.com/bahmutov/snap-shot#readme",
   "keywords": [
     "assert",
     "assertion",
@@ -48,7 +48,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bahmutov/snap-shots.git"
+    "url": "https://github.com/bahmutov/snap-shot.git"
   },
   "scripts": {
     "ban": "ban",

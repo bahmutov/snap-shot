@@ -4,6 +4,10 @@ const snapshot = require('.')
 describe('the number', () => {
   const number = 42
 
+  it('is 42', () => {
+    snapshot(42)
+  })
+
   it('should be 42', () => {
     snapshot(number)
   })
