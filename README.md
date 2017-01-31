@@ -53,6 +53,11 @@ $ mocha spec.js
     Error: expected 42 got 80
 ```
 
+## Related
+
+* [chai-jest-snapshot](https://github.com/suchipi/chai-jest-snapshot) if
+  you are using [Chai](http://chaijs.com/)
+
 ### Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2017
