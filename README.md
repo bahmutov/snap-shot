@@ -1,4 +1,4 @@
-# snap-shots
+# snap-shot
 
 > Jest-like snapshot feature for the rest of us
 
@@ -16,18 +16,41 @@ JUST a single assertion method to be used in BDD frameworks (Mocha, Jasmine)
 
 ## Example
 
+Install: `npm install --save-dev snap-shot`
+
 ```js
-const snapshots = require('snap-shots')
+const snapshot = require('snap-shot')
 it('is 42', () => {
-  snapshots(42)
+  snapshot(42)
 })
 ```
 
-Run it first time `mocha spec.js`. This will create snapshots JSON values file
-inside `.snap-shots`.
+Run it first time with `mocha spec.js`.
+This will create snapshots JSON values file inside `.snap-shot`.
 
 ```sh
-cat .snap-shots/.snap-shots.json
+$ mocha spec.js
+$ cat .snap-shot/snap-shot.json
+{
+  "spec.js": {
+    "is 42": 42
+  }
+}
+```
+
+Now modify the `spec.js` file
+
+```js
+const snapshot = require('snap-shot')
+it('is 42', () => {
+  snapshot(80)
+})
+```
+
+```sh
+$ mocha spec.js
+1) is 42:
+    Error: expected 42 got 80
 ```
 
 ### Small print
@@ -41,7 +64,7 @@ Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2017
 License: MIT - do anything with the code, but don't blame me if it does not work.
 
 Support: if you find any problems with this module, email / tweet /
-[open issue](https://github.com/bahmutov/snap-shots/issues) on Github
+[open issue](https://github.com/bahmutov/snap-shot/issues) on Github
 
 ## MIT License
 
@@ -68,10 +91,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-[npm-icon]: https://nodei.co/npm/snap-shots.svg?downloads=true
-[npm-url]: https://npmjs.org/package/snap-shots
-[ci-image]: https://travis-ci.org/bahmutov/snap-shots.svg?branch=master
-[ci-url]: https://travis-ci.org/bahmutov/snap-shots
+[npm-icon]: https://nodei.co/npm/snap-shot.svg?downloads=true
+[npm-url]: https://npmjs.org/package/snap-shot
+[ci-image]: https://travis-ci.org/bahmutov/snap-shot.svg?branch=master
+[ci-url]: https://travis-ci.org/bahmutov/snap-shot
 [semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-url]: https://github.com/semantic-release/semantic-release
 [standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg

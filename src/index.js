@@ -5,7 +5,9 @@ const R = require('ramda')
 const fs = require('fs')
 const read = fs.readFileSync
 const path = require('path')
-const folder = path.join(__dirname, '.snap-shot')
+
+const cwd = process.cwd()
+const folder = path.join(cwd, '.snap-shot')
 if (!fs.existsSync(folder)) {
   fs.mkdirSync(folder)
   console.log('made folder', folder)
@@ -36,7 +38,7 @@ function getItsName ({file, line}) {
 }
 
 function findStoredValue ({file, specName}) {
-  const relativePath = path.relative(__dirname, file)
+  const relativePath = path.relative(cwd, file)
   console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     return
@@ -48,7 +50,7 @@ function findStoredValue ({file, specName}) {
 }
 
 function storeValue ({file, specName, value}) {
-  const relativePath = path.relative(__dirname, file)
+  const relativePath = path.relative(cwd, file)
   console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
