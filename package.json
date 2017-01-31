@@ -28,7 +28,7 @@
   },
   "files": [
     "src/*.js",
-    "!src/*-spec.js"
+    "!src/*spec.js"
   ],
   "homepage": "https://github.com/bahmutov/snap-shots#readme",
   "keywords": [
@@ -60,7 +60,7 @@
     "secure": "nsp check",
     "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
     "test": "npm run unit",
-    "unit": "mocha src/*-spec.js"
+    "unit": "mocha src/*spec.js"
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.0",
@@ -72,5 +72,11 @@
     "nsp": "2.6.2",
     "pre-git": "3.12.0",
     "standard": "8.6.0"
+  },
+  "dependencies": {
+    "callsites": "2.0.0",
+    "falafel": "2.0.0",
+    "lazy-ass": "1.5.0",
+    "ramda": "0.23.0"
   }
 }
