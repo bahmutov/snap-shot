@@ -87,7 +87,12 @@ function snapshot (what, update) {
   `
   console.log(message)
   const specName = getItsName({file, line, column})
-  console.log(`found spec name "${specName}"`)
+  console.log(`found spec name "${specName}" for line ${line} column ${column}`)
+  if (!specName) {
+    console.error('Could not determine test for %s line %d column %d',
+      file, line, column)
+    return
+  }
 
   // perfect opportunity to use Maybe
   const storedValue = findStoredValue({file, specName})

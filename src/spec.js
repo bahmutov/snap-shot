@@ -16,3 +16,9 @@ describe('the number', () => {
     snapshot(80)
   })
 })
+
+// Jest mock "test"
+const test = it
+test('jest test', () => {
+  snapshot('jest value')
+})
