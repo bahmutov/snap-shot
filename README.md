@@ -101,6 +101,14 @@ it('is 42', () => {
 // snapshot file now has {"is 42": 80)
 ```
 
+## Debugging
+
+Run with `DEBUG=snap-shot` environment variable
+
+```sh
+$ DEBUG=snap-shot mocha spec.js
+```
+
 ## Related
 
 * [chai-jest-snapshot](https://github.com/suchipi/chai-jest-snapshot) if

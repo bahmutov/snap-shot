@@ -1,6 +1,8 @@
+const debug = require('debug')('snap-shot')
 const callsites = require('callsites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
+const is = require('check-more-types')
 const R = require('ramda')
 const fs = require('fs')
 const read = fs.readFileSync
@@ -45,7 +47,7 @@ function getItsName ({file, line}) {
 
 function findStoredValue ({file, specName}) {
   const relativePath = path.relative(cwd, file)
-  console.log('relativePath', relativePath)
+  // console.log('relativePath', relativePath)
 
   if (shouldUpdate) {
     // let the new value replace the current value
@@ -63,16 +65,21 @@ function findStoredValue ({file, specName}) {
 
 function storeValue ({file, specName, value}) {
   la(value !== undefined, 'cannot store undefined value')
+  la(is.unemptyString(file), 'missing filename', file)
+  la(is.unemptyString(specName), 'missing spec name', specName)
 
   const relativePath = path.relative(cwd, file)
-  console.log('relativePath', relativePath)
+  // console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
   }
   snapshots[relativePath][specName] = value
   const s = JSON.stringify(snapshots, null, 2) + '\n'
   fs.writeFileSync(filename, s, 'utf8')
-  console.log('saved', filename)
+  debug('saved updated %s with for spec %s', filename, specName)
+
+  console.log('Saved for "%s" new snapshot value\n%s',
+    specName, JSON.stringify(value))
 }
 
 function snapshot (what, update) {
@@ -89,9 +96,9 @@ function snapshot (what, update) {
     line: ${line},
     column: ${column}
   `
-  console.log(message)
+  debug(message)
   const specName = getItsName({file, line, column})
-  console.log(`found spec name "${specName}" for line ${line} column ${column}`)
+  debug(`found spec name "${specName}" for line ${line} column ${column}`)
   if (!specName) {
     console.error('Could not determine test for %s line %d column %d',
       file, line, column)
@@ -100,10 +107,10 @@ function snapshot (what, update) {
 
   // perfect opportunity to use Maybe
   const storedValue = findStoredValue({file, specName})
-  console.log('stored value', storedValue)
   if (update || storedValue === undefined) {
     storeValue({file, specName, value: what})
   } else {
+    debug('found snapshot for "%s", value', specName, storedValue)
     la(R.equals(what, storedValue), 'expected', storedValue, 'got', what)
   }
 }
