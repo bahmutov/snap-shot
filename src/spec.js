@@ -28,6 +28,11 @@ it('compares objects', () => {
   snapshot(o)
 })
 
+const testName = 'variable test name (value 30)'
+it(testName, () => {
+  snapshot(30)
+})
+
 it('should not store undefined value', () => {
   let value = 42
   snapshot(value)
