@@ -104,6 +104,13 @@ it('is 42', () => {
 // snapshot file now has {"is 42": 80)
 ```
 
+You can also update a single or several tests when running Mocha by filtering
+the tests using [grep feature](http://mochajs.org/#g---grep-pattern).
+
+```sh
+$ UPDATE=1 mocha -g "test name pattern" *-spec.js
+```
+
 ## Tests with dynamic names
 
 Sometimes tests are generated dynamically without hardcoded names. In this
