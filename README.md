@@ -104,6 +104,21 @@ it('is 42', () => {
 // snapshot file now has {"is 42": 80)
 ```
 
+## Tests with dynamic names
+
+Sometimes tests are generated dynamically without hardcoded names. In this
+case SHA256 of the test callback function is used to find its value.
+
+```js
+// this still works
+const testName = 'variable test name (value 30)'
+const value = 30
+it(testName, () => {
+  // this is a test without hard coded name
+  snapshot(value)
+})
+```
+
 ## Debugging
 
 Run with `DEBUG=snap-shot` environment variable
