@@ -21,6 +21,9 @@ by inspecting its call site
 and parsing AST of the spec file
 (using [falafel](https://github.com/substack/node-falafel#readme)).
 
+Snapshot values are compared using
+[variable-diff](https://github.com/taylorhakes/variable-diff).
+
 ## Example
 
 Install: `npm install --save-dev snap-shot`

@@ -3,10 +3,10 @@ const callsites = require('callsites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const R = require('ramda')
 const fs = require('fs')
 const read = fs.readFileSync
 const path = require('path')
+const diff = require('variable-diff')
 
 const shouldUpdate = Boolean(process.env.UPDATE)
 
@@ -111,7 +111,13 @@ function snapshot (what, update) {
     storeValue({file, specName, value: what})
   } else {
     debug('found snapshot for "%s", value', specName, storedValue)
-    la(R.equals(what, storedValue), 'expected', storedValue, 'got', what)
+    const diffed = diff(storedValue, what)
+    if (diffed.changed) {
+      const text = diffed.text
+      const msg = `Test "${specName}" snapshot difference\n${text}`
+      console.log(msg)
+      throw new Error(msg)
+    }
   }
 }
 

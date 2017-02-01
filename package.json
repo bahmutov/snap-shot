@@ -81,6 +81,6 @@
     "debug": "2.6.0",
     "falafel": "2.0.0",
     "lazy-ass": "1.5.0",
-    "ramda": "0.23.0"
+    "variable-diff": "1.1.0"
   }
 }

@@ -17,6 +17,17 @@ describe('the number', () => {
   })
 })
 
+it('compares objects', () => {
+  const o = {
+    inner: {
+      a: 10,
+      b: 20
+    },
+    foo: 'foo'
+  }
+  snapshot(o)
+})
+
 it('should not store undefined value', () => {
   let value = 42
   snapshot(value)
