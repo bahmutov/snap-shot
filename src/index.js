@@ -1,3 +1,5 @@
+'use strict'
+
 const debug = require('debug')('snap-shot')
 const callsites = require('callsites')
 const falafel = require('falafel')
@@ -7,6 +9,7 @@ const fs = require('fs')
 const read = fs.readFileSync
 const path = require('path')
 const diff = require('variable-diff')
+const crypto = require('crypto')
 
 const shouldUpdate = Boolean(process.env.UPDATE)
 
@@ -27,19 +30,43 @@ function isTestFunction (name) {
   return ['it', 'test'].includes(name)
 }
 
+function sha256 (string) {
+  la(is.unemptyString(string), 'missing string to SHA', string)
+  const hash = crypto.createHash('sha256')
+  hash.update(string)
+  return hash.digest('hex')
+}
+
 function getItsName ({file, line}) {
   // TODO can be cached efficiently
   const source = read(file, 'utf8')
   let foundSpecName
   const options = {locations: true}
   falafel(source, options, node => {
+    if (foundSpecName) {
+      // already found
+      return
+    }
     if (node.type === 'CallExpression' &&
       isTestFunction(node.callee.name) &&
       node.loc.start.line < line &&
       node.loc.end.line > line) {
+      debug('found test function around snapshot at line %d', line)
+      // console.log(node.arguments)
       // console.log('found it')
       // console.log(node.arguments[0].value)
-      foundSpecName = node.arguments[0].value
+      // TODO handle tests where just a single function argument was used
+      // it(function testThis() {...})
+      const specName = node.arguments[0].value
+      foundSpecName = specName
+
+      if (!foundSpecName) {
+        const source = node.arguments[1].source()
+        const hash = sha256(source)
+        debug('using source hash %s for found spec in %s line %d',
+          hash, file, line)
+        foundSpecName = hash
+      }
     }
   })
   return foundSpecName
@@ -114,7 +141,8 @@ function snapshot (what, update) {
     const diffed = diff(storedValue, what)
     if (diffed.changed) {
       const text = diffed.text
-      const msg = `Test "${specName}" snapshot difference\n${text}`
+      debug('Test "%s" snapshot difference', specName)
+      const msg = `snapshot difference\n${text}`
       console.log(msg)
       throw new Error(msg)
     }

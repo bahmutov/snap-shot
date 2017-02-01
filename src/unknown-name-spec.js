@@ -1,6 +1,6 @@
 const snapshot = require('.')
 
-/* global describe, it */
+/* global it */
 
 const testName = 'variable test name (value 30)'
 const value = 30
