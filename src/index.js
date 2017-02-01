@@ -112,11 +112,18 @@ function storeValue ({file, specName, value}) {
 function snapshot (what, update) {
   // TODO for multiple values inside same spec
   // we could use callsites[0] object
-  const callsite = callsites()[1]
-  const file = callsite.getFileName()
-  const functionName = callsite.getFunctionName()
-  const line = callsite.getLineNumber()
-  const column = callsite.getColumnNumber()
+  const sites = callsites()
+  debug('%d callsite(s)', sites.length)
+  if (sites.length < 2) {
+    const msg = 'Do not have caller function callsite'
+    throw new Error(msg)
+  }
+
+  const caller = sites[1]
+  const file = caller.getFileName()
+  const functionName = caller.getFunctionName()
+  const line = caller.getLineNumber()
+  const column = caller.getColumnNumber()
   const message = `
     file: ${file}
     function: ${functionName}
