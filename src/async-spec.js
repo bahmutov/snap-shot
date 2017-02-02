@@ -13,4 +13,8 @@ describe('async tests', () => {
     return Promise.resolve(20)
       .then(data => snapshot(data))
   })
+
+  it.only('snapshot can handle promise', () => {
+    return snapshot(Promise.resolve('promise resolved'))
+  })
 })

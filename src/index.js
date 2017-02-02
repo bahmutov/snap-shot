@@ -14,6 +14,8 @@ const crypto = require('crypto')
 const shouldUpdate = Boolean(process.env.UPDATE)
 
 const cwd = process.cwd()
+const fromCurrentFolder = path.relative.bind(null, cwd)
+
 const folder = path.join(cwd, '.snap-shot')
 if (!fs.existsSync(folder)) {
   fs.mkdirSync(folder)
@@ -73,7 +75,7 @@ function getItsName ({file, line}) {
 }
 
 function findStoredValue ({file, specName}) {
-  const relativePath = path.relative(cwd, file)
+  const relativePath = fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
 
   if (shouldUpdate) {
@@ -95,7 +97,7 @@ function storeValue ({file, specName, value}) {
   la(is.unemptyString(file), 'missing filename', file)
   la(is.unemptyString(specName), 'missing spec name', specName)
 
-  const relativePath = path.relative(cwd, file)
+  const relativePath = fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
@@ -135,7 +137,7 @@ function snapshot (what, update) {
   debug(`found spec name "${specName}" for line ${line} column ${column}`)
   if (!specName) {
     console.error('Could not determine test for %s line %d column %d',
-      file, line, column)
+      fromCurrentFolder(file), line, column)
     return
   }
 
