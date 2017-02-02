@@ -7,6 +7,7 @@ const la = require('lazy-ass')
 const is = require('check-more-types')
 const diff = require('variable-diff')
 const crypto = require('crypto')
+const {snapshotIndex} = require('./utils')
 
 // does this test work with jsdom?
 const isBrowser = typeof window === 'object' &&
@@ -41,7 +42,7 @@ function sha256 (string) {
 function getSpecFunction ({file, line}) {
   // TODO can be cached efficiently
   const source = fs.readFileSync(file, 'utf8')
-  let foundSpecName, specSource
+  let foundSpecName, specSource, startLine
   const options = {locations: true}
 
   falafel(source, options, node => {
@@ -60,6 +61,7 @@ function getSpecFunction ({file, line}) {
       }
 
       specSource = node.arguments[1].source()
+      startLine = node.loc.start.line
 
       // console.log(node.source())
       // console.log(node.arguments[0])
@@ -93,7 +95,8 @@ function getSpecFunction ({file, line}) {
   })
   return {
     specName: foundSpecName,
-    specSource
+    specSource,
+    startLine
   }
 }
 
@@ -162,7 +165,8 @@ function snapshot (what, update) {
     column: ${column}
   `
   debug(message)
-  const {specName, specSource} = getSpecFunction({file, line, column})
+  const {specName, specSource, startLine} =
+    getSpecFunction({file, line, column})
   debug(`found spec name "${specName}" for line ${line} column ${column}`)
 
   if (!specName) {
@@ -172,9 +176,20 @@ function snapshot (what, update) {
   }
   la(is.unemptyString(specSource), 'could not get spec source from',
     file, 'line', line, 'column', column, 'named', specName)
+  la(is.number(startLine), 'could not determine spec function start line',
+    file, 'line', line, 'column', column, 'named', specName)
+
+  const snapshotRelativeLine = line - startLine
 
   const setOrCheckValue = value => {
     // perfect opportunity to use Maybe
+    // find which snapshot (potentially) is this inside the spec file
+    const index = snapshotIndex(specSource, snapshotRelativeLine)
+    la(index >= 0, 'invalid snapshot index', index,
+      'from source\n', specSource, '\nrelative line', snapshotRelativeLine)
+    debug('spec "%s" snapshot at line %d is #%d',
+      specName, snapshotRelativeLine, index)
+
     const storedValue = findStoredValue({file, specName})
     if (update || storedValue === undefined) {
       storeValue({file, specName, value})
