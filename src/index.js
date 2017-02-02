@@ -18,8 +18,17 @@ const shouldUpdate = Boolean(process.env.UPDATE)
 
 const snapshots = fs.loadSnapshots()
 
-function isTestFunction (name) {
+function isTestFunctionName (name) {
   return ['it', 'test'].includes(name)
+}
+
+function isTestFunction (node) {
+  if (node.type === 'Identifier') {
+    return isTestFunctionName(node.name)
+  }
+  if (node.type === 'MemberExpression') {
+    return isTestFunctionName(node.object.name)
+  }
 }
 
 function sha256 (string) {
@@ -41,7 +50,7 @@ function getSpecFunction ({file, line}) {
       return
     }
     if (node.type === 'CallExpression' &&
-      isTestFunction(node.callee.name) &&
+      isTestFunction(node.callee) &&
       node.loc.start.line < line &&
       node.loc.end.line > line) {
       debug('found test function around snapshot at line %d', line)

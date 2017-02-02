@@ -1,10 +1,10 @@
 const snapshot = require('.')
 
 /* global describe, it */
-describe.skip('multiple snapshots', () => {
+describe('multiple snapshots', () => {
   it('handles multiple snapshots', () => {
     snapshot(1) // first snapshot
-    snapshot(2) // second snapshot
+    // snapshot(2) // second snapshot
   })
 
   it('handles multiple snapshots in if/else', () => {
