@@ -3,8 +3,10 @@
 const fs = require('fs')
 const path = require('path')
 
+const cwd = process.cwd()
+const fromCurrentFolder = path.relative.bind(null, cwd)
+
 function getFilename () {
-  const cwd = process.cwd()
   const folder = path.join(cwd, '.snap-shot')
   if (!fs.existsSync(folder)) {
     fs.mkdirSync(folder)
@@ -33,6 +35,7 @@ function saveSnapshots (snapshots) {
 
 module.exports = {
   readFileSync: fs.readFileSync,
+  fromCurrentFolder,
   loadSnapshots,
   saveSnapshots
 }

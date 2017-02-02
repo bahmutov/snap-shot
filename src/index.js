@@ -5,59 +5,17 @@ const callsites = require('callsites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const path = require('path')
 const diff = require('variable-diff')
 const crypto = require('crypto')
 
-const isNode = typeof global === 'object'
-const fs = isNode ? require('./file-system') : undefined
-
-// testing callsites
-// function bar () {
-//   const sites = callsites()
-//   return sites[0].getFileName()
-// }
-// function foo () {
-//   return bar()
-// }
-// const specFileUrl = foo()
-
-// // testing falafel
-// function testFalafel (source) {
-//   const options = {locations: true}
-//   falafel(source, options, node => {
-//     if (node.type === 'CallExpression' && node.callee.name === 'it') {
-//       console.log('found node')
-//       console.log(node.source())
-//     }
-//   })
-// }
-// specFileUrl is something like
-// http://localhost:49829/__cypress/tests?p=cypress/integration/spec.js-438
-// we will need to get "true" filename which in this case should be
-// cypress/integration/spec.js
-// console.log(specFileUrl)
-// fetch(specFileUrl)
-//   .then(r => r.text())
-//   .then(testFalafel)
-//   .catch(console.error)
+// does this test work with jsdom?
+const isBrowser = typeof window === 'object' &&
+  (typeof global === 'undefined' || window === global)
+const isNode = !isBrowser
+const fs = isNode ? require('./file-system') : require('./browser-system')
 
 const shouldUpdate = Boolean(process.env.UPDATE)
 
-const cwd = process.cwd()
-const fromCurrentFolder = path.relative.bind(null, cwd)
-
-// const folder = path.join(cwd, '.snap-shot')
-// if (!fs.existsSync(folder)) {
-//   fs.mkdirSync(folder)
-//   console.log('made folder', folder)
-// }
-// const filename = path.join(folder, 'snap-shot.json')
-// let snapshots = {}
-// if (fs.existsSync(filename)) {
-//   snapshots = require(filename)
-//   console.log('loaded snapshots from', filename)
-// }
 const snapshots = fs.loadSnapshots()
 
 function isTestFunction (name) {
@@ -107,7 +65,7 @@ function getItsName ({file, line}) {
 }
 
 function findStoredValue ({file, specName}) {
-  const relativePath = fromCurrentFolder(file)
+  const relativePath = fs.fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
 
   if (shouldUpdate) {
@@ -129,7 +87,7 @@ function storeValue ({file, specName, value}) {
   la(is.unemptyString(file), 'missing filename', file)
   la(is.unemptyString(specName), 'missing spec name', specName)
 
-  const relativePath = fromCurrentFolder(file)
+  const relativePath = fs.fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
@@ -148,11 +106,16 @@ function snapshot (what, update) {
   // TODO for multiple values inside same spec
   // we could use callsites[0] object
   const sites = callsites()
-  debug('%d callsite(s)', sites.length)
   if (sites.length < 2) {
+    // hmm, maybe there is test (like we are inside Cypress)
+    if (this && this.test && this.test.title) {
+      debug('no callsite, but have test title "%s"', this.test.title)
+      return this.test.title
+    }
     const msg = 'Do not have caller function callsite'
     throw new Error(msg)
   }
+  debug('%d callsite(s)', sites.length)
 
   const caller = sites[1]
   const file = caller.getFileName()
@@ -170,7 +133,7 @@ function snapshot (what, update) {
   debug(`found spec name "${specName}" for line ${line} column ${column}`)
   if (!specName) {
     console.error('Could not determine test for %s line %d column %d',
-      fromCurrentFolder(file), line, column)
+      fs.fromCurrentFolder(file), line, column)
     return what
   }
 
@@ -199,6 +162,12 @@ function snapshot (what, update) {
   } else {
     return setOrCheckValue(what)
   }
+}
+
+if (isBrowser) {
+  // there might be async step to load test source code in the browser
+  la(is.fn(fs.init), 'browser file system is missing init', fs)
+  snapshot.init = fs.init
 }
 
 module.exports = snapshot
