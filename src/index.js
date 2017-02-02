@@ -5,41 +5,42 @@ const callsites = require('callsites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const fs = require('fs')
-const read = fs.readFileSync
 const path = require('path')
 const diff = require('variable-diff')
 const crypto = require('crypto')
 
-// testing callsites
-function bar() {
-  const sites = callsites()
-  return sites[0].getFileName()
-}
-function foo() {
-  return bar()
-}
-const specFileUrl = foo()
+const isNode = typeof global === 'object'
+const fs = isNode ? require('./file-system') : undefined
 
-// testing falafel
-function testFalafel(source) {
-  const options = {locations: true}
-  falafel(source, options, node => {
-    if (node.type === 'CallExpression' && node.callee.name === 'it') {
-      console.log('found node')
-      console.log(node.source())
-    }
-  })
-}
+// testing callsites
+// function bar () {
+//   const sites = callsites()
+//   return sites[0].getFileName()
+// }
+// function foo () {
+//   return bar()
+// }
+// const specFileUrl = foo()
+
+// // testing falafel
+// function testFalafel (source) {
+//   const options = {locations: true}
+//   falafel(source, options, node => {
+//     if (node.type === 'CallExpression' && node.callee.name === 'it') {
+//       console.log('found node')
+//       console.log(node.source())
+//     }
+//   })
+// }
 // specFileUrl is something like
 // http://localhost:49829/__cypress/tests?p=cypress/integration/spec.js-438
 // we will need to get "true" filename which in this case should be
 // cypress/integration/spec.js
-console.log(specFileUrl)
-fetch(specFileUrl)
-  .then(r => r.text())
-  .then(testFalafel)
-  .catch(console.error)
+// console.log(specFileUrl)
+// fetch(specFileUrl)
+//   .then(r => r.text())
+//   .then(testFalafel)
+//   .catch(console.error)
 
 const shouldUpdate = Boolean(process.env.UPDATE)
 
@@ -71,7 +72,7 @@ function sha256 (string) {
 
 function getItsName ({file, line}) {
   // TODO can be cached efficiently
-  const source = read(file, 'utf8')
+  const source = fs.readFileSync(file, 'utf8')
   let foundSpecName
   const options = {locations: true}
   falafel(source, options, node => {
