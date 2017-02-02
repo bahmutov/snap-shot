@@ -111,6 +111,8 @@ function storeValue ({file, specName, value}) {
     specName, JSON.stringify(value))
 }
 
+const isPromise = x => is.object(x) && is.fn(x.then)
+
 function snapshot (what, update) {
   // TODO for multiple values inside same spec
   // we could use callsites[0] object
@@ -138,23 +140,33 @@ function snapshot (what, update) {
   if (!specName) {
     console.error('Could not determine test for %s line %d column %d',
       fromCurrentFolder(file), line, column)
-    return
+    return what
   }
 
-  // perfect opportunity to use Maybe
-  const storedValue = findStoredValue({file, specName})
-  if (update || storedValue === undefined) {
-    storeValue({file, specName, value: what})
-  } else {
-    debug('found snapshot for "%s", value', specName, storedValue)
-    const diffed = diff(storedValue, what)
-    if (diffed.changed) {
-      const text = diffed.text
-      debug('Test "%s" snapshot difference', specName)
-      const msg = `snapshot difference\n${text}`
-      console.log(msg)
-      throw new Error(msg)
+  const setOrCheckValue = value => {
+    // perfect opportunity to use Maybe
+    const storedValue = findStoredValue({file, specName})
+    if (update || storedValue === undefined) {
+      storeValue({file, specName, value})
+    } else {
+      debug('found snapshot for "%s", value', specName, storedValue)
+      const diffed = diff(storedValue, value)
+      if (diffed.changed) {
+        const text = diffed.text
+        debug('Test "%s" snapshot difference', specName)
+        const msg = `snapshot difference\n${text}`
+        console.log(msg)
+        throw new Error(msg)
+      }
     }
+
+    return value
+  }
+
+  if (isPromise(what)) {
+    return what.then(setOrCheckValue)
+  } else {
+    return setOrCheckValue(what)
   }
 }
 

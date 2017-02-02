@@ -75,22 +75,29 @@ are likely an edge case. If you disagree, open
 * **Node** - it might be possible to bundle this logic into browser bundle
   but I haven't done this yet.
 
+## Promises
+
 For asynchronous code, please have a function inside the spec before
-calling `snapshot`.
+calling `snap-shot` or let `snap-shot` wrap the promise.
 
 ```js
 it('promise to function', () => {
-  // works fine
   return Promise.resolve(20)
     .then(data => snapshot(data))
 })
+
+it('snap-shot can wrap promise', () => {
+  return snapshot(Promise.resolve('value'))
+})
+
+// does NOT work
 it('promise to snapshot', () => {
-  // does NOT work
   return Promise.resolve(20)
     .then(snapshot)
 })
 ```
-In the second test, the stack trace from `snapshot` cannot get any parent
+
+In the last test, the stack trace from `snap-shot` cannot get any parent
 information, thus it cannot find the unit test.
 
 ## Jest

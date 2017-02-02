@@ -14,7 +14,7 @@ describe('async tests', () => {
       .then(data => snapshot(data))
   })
 
-  it.only('snapshot can handle promise', () => {
+  it('snapshot can wrap promise', () => {
     return snapshot(Promise.resolve('promise resolved'))
   })
 })
