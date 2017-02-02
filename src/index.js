@@ -44,12 +44,31 @@ function getItsName ({file, line}) {
       node.loc.start.line < line &&
       node.loc.end.line > line) {
       debug('found test function around snapshot at line %d', line)
-      // console.log(node.arguments)
+
+      if (node.arguments.length !== 2) {
+        throw new Error('Cannot get test name for ' + node.source())
+      }
+
+      // console.log(node.source())
+      // console.log(node.arguments[0])
+
       // console.log('found it')
       // console.log(node.arguments[0].value)
       // TODO handle tests where just a single function argument was used
       // it(function testThis() {...})
-      const specName = node.arguments[0].value
+      let specName
+
+      const nameNode = node.arguments[0]
+      if (nameNode.type === 'TemplateLiteral') {
+        specName = nameNode.source().replace(/`/g, '')
+        debug('template literal name "%s"', specName)
+      } else if (nameNode.type === 'Literal') {
+        specName = nameNode.value
+        debug('regular string name "%s", specName')
+      } else {
+        // TODO handle single function
+      }
+
       foundSpecName = specName
 
       if (!foundSpecName) {
