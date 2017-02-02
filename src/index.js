@@ -29,11 +29,12 @@ function sha256 (string) {
   return hash.digest('hex')
 }
 
-function getItsName ({file, line}) {
+function getSpecFunction ({file, line}) {
   // TODO can be cached efficiently
   const source = fs.readFileSync(file, 'utf8')
-  let foundSpecName
+  let foundSpecName, specSource
   const options = {locations: true}
+
   falafel(source, options, node => {
     if (foundSpecName) {
       // already found
@@ -48,6 +49,8 @@ function getItsName ({file, line}) {
       if (node.arguments.length !== 2) {
         throw new Error('Cannot get test name for ' + node.source())
       }
+
+      specSource = node.arguments[1].source()
 
       // console.log(node.source())
       // console.log(node.arguments[0])
@@ -72,15 +75,17 @@ function getItsName ({file, line}) {
       foundSpecName = specName
 
       if (!foundSpecName) {
-        const source = node.arguments[1].source()
-        const hash = sha256(source)
+        const hash = sha256(specSource)
         debug('using source hash %s for found spec in %s line %d',
           hash, file, line)
         foundSpecName = hash
       }
     }
   })
-  return foundSpecName
+  return {
+    specName: foundSpecName,
+    specSource
+  }
 }
 
 function findStoredValue ({file, specName}) {
@@ -148,13 +153,16 @@ function snapshot (what, update) {
     column: ${column}
   `
   debug(message)
-  const specName = getItsName({file, line, column})
+  const {specName, specSource} = getSpecFunction({file, line, column})
   debug(`found spec name "${specName}" for line ${line} column ${column}`)
+
   if (!specName) {
     console.error('Could not determine test for %s line %d column %d',
       fs.fromCurrentFolder(file), line, column)
     return what
   }
+  la(is.unemptyString(specSource), 'could not get spec source from',
+    file, 'line', line, 'column', column, 'named', specName)
 
   const setOrCheckValue = value => {
     // perfect opportunity to use Maybe
