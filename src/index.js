@@ -47,17 +47,18 @@ const shouldUpdate = Boolean(process.env.UPDATE)
 const cwd = process.cwd()
 const fromCurrentFolder = path.relative.bind(null, cwd)
 
-const folder = path.join(cwd, '.snap-shot')
-if (!fs.existsSync(folder)) {
-  fs.mkdirSync(folder)
-  console.log('made folder', folder)
-}
-const filename = path.join(folder, 'snap-shot.json')
-let snapshots = {}
-if (fs.existsSync(filename)) {
-  snapshots = require(filename)
-  console.log('loaded snapshots from', filename)
-}
+// const folder = path.join(cwd, '.snap-shot')
+// if (!fs.existsSync(folder)) {
+//   fs.mkdirSync(folder)
+//   console.log('made folder', folder)
+// }
+// const filename = path.join(folder, 'snap-shot.json')
+// let snapshots = {}
+// if (fs.existsSync(filename)) {
+//   snapshots = require(filename)
+//   console.log('loaded snapshots from', filename)
+// }
+const snapshots = fs.loadSnapshots()
 
 function isTestFunction (name) {
   return ['it', 'test'].includes(name)
@@ -134,9 +135,8 @@ function storeValue ({file, specName, value}) {
     snapshots[relativePath] = {}
   }
   snapshots[relativePath][specName] = value
-  const s = JSON.stringify(snapshots, null, 2) + '\n'
-  fs.writeFileSync(filename, s, 'utf8')
-  debug('saved updated %s with for spec %s', filename, specName)
+  fs.saveSnapshots(snapshots)
+  debug('saved updated snapshot for spec %s', specName)
 
   console.log('Saved for "%s" new snapshot value\n%s',
     specName, JSON.stringify(value))
