@@ -11,6 +11,36 @@ const path = require('path')
 const diff = require('variable-diff')
 const crypto = require('crypto')
 
+// testing callsites
+function bar() {
+  const sites = callsites()
+  return sites[0].getFileName()
+}
+function foo() {
+  return bar()
+}
+const specFileUrl = foo()
+
+// testing falafel
+function testFalafel(source) {
+  const options = {locations: true}
+  falafel(source, options, node => {
+    if (node.type === 'CallExpression' && node.callee.name === 'it') {
+      console.log('found node')
+      console.log(node.source())
+    }
+  })
+}
+// specFileUrl is something like
+// http://localhost:49829/__cypress/tests?p=cypress/integration/spec.js-438
+// we will need to get "true" filename which in this case should be
+// cypress/integration/spec.js
+console.log(specFileUrl)
+fetch(specFileUrl)
+  .then(r => r.text())
+  .then(testFalafel)
+  .catch(console.error)
+
 const shouldUpdate = Boolean(process.env.UPDATE)
 
 const cwd = process.cwd()
