@@ -67,14 +67,6 @@ $ mocha spec.js
 are likely an edge case. If you disagree, open
 [an issue](https://github.com/bahmutov/snap-shot/issues) please.
 
-## Limitations
-
-* **single value per test** - I think the purpose of snapshots is to compare
-  large objects, and it makes less sense to have multiple comparisons per
-  tests. Split large tests into simpler "compute - assert"
-* **Node** - it might be possible to bundle this logic into browser bundle
-  but I haven't done this yet.
-
 ## Promises
 
 For asynchronous code, please have a function inside the spec before
@@ -99,6 +91,8 @@ it('promise to snapshot', () => {
 
 In the last test, the stack trace from `snap-shot` cannot get any parent
 information, thus it cannot find the unit test.
+
+See [src/async-spec.js](src/async-spec.js)
 
 ## Jest
 
@@ -150,6 +144,21 @@ it(testName, () => {
   snapshot(value)
 })
 ```
+
+See [src/unknown-name-spec.js](src/unknown-name-spec.js)
+
+## Multiple snapshots
+
+A single test can have multiple snapshots.
+
+```js
+it('handles multiple snapshots', () => {
+  snapshot(1)
+  snapshot(2)
+})
+```
+
+See [src/multiple-spec.js](src/multiple-spec.js)
 
 ## Debugging
 

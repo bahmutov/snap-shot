@@ -100,7 +100,7 @@ function getSpecFunction ({file, line}) {
   }
 }
 
-function findStoredValue ({file, specName}) {
+function findStoredValue ({file, specName, index = 0}) {
   const relativePath = fs.fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
 
@@ -115,25 +115,33 @@ function findStoredValue ({file, specName}) {
   if (!(specName in snapshots[relativePath])) {
     return
   }
-  return snapshots[relativePath][specName]
+
+  const values = snapshots[relativePath][specName]
+  la(is.array(values), 'missing values for spec', specName)
+
+  return values[index]
 }
 
-function storeValue ({file, specName, value}) {
+function storeValue ({file, specName, index, value}) {
   la(value !== undefined, 'cannot store undefined value')
   la(is.unemptyString(file), 'missing filename', file)
   la(is.unemptyString(specName), 'missing spec name', specName)
+  la(is.number(index), 'missing snapshot index', file, specName, index)
 
   const relativePath = fs.fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
   }
-  snapshots[relativePath][specName] = value
+  if (!snapshots[relativePath][specName]) {
+    snapshots[relativePath][specName] = []
+  }
+  snapshots[relativePath][specName][index] = value
   fs.saveSnapshots(snapshots)
-  debug('saved updated snapshot for spec %s', specName)
+  debug('saved updated snapshot %d for spec %s', index, specName)
 
-  console.log('Saved for "%s" new snapshot value\n%s',
-    specName, JSON.stringify(value))
+  console.log('Saved for "%s" new snapshot %d value\n%s',
+    specName, index, JSON.stringify(value, null, 2))
 }
 
 const isPromise = x => is.object(x) && is.fn(x.then)
@@ -190,9 +198,9 @@ function snapshot (what, update) {
     debug('spec "%s" snapshot at line %d is #%d',
       specName, snapshotRelativeLine, index)
 
-    const storedValue = findStoredValue({file, specName})
+    const storedValue = findStoredValue({file, specName, index})
     if (update || storedValue === undefined) {
-      storeValue({file, specName, value})
+      storeValue({file, specName, index, value})
     } else {
       debug('found snapshot for "%s", value', specName, storedValue)
       const diffed = diff(storedValue, value)
