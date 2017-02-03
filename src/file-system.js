@@ -2,6 +2,8 @@
 
 const fs = require('fs')
 const path = require('path')
+const diff = require('variable-diff')
+const debug = require('debug')('snap-shot')
 
 const cwd = process.cwd()
 const fromCurrentFolder = path.relative.bind(null, cwd)
@@ -33,9 +35,21 @@ function saveSnapshots (snapshots) {
   return snapshots
 }
 
+function raiseIfDifferent ({value, expected, specName}) {
+  const diffed = diff(expected, value)
+  if (diffed.changed) {
+    const text = diffed.text
+    debug('Test "%s" snapshot difference', specName)
+    const msg = `snapshot difference\n${text}`
+    console.log(msg)
+    throw new Error(msg)
+  }
+}
+
 module.exports = {
   readFileSync: fs.readFileSync,
   fromCurrentFolder,
   loadSnapshots,
-  saveSnapshots
+  saveSnapshots,
+  raiseIfDifferent
 }

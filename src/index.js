@@ -5,19 +5,24 @@ const callsites = require('callsites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const diff = require('variable-diff')
 const crypto = require('crypto')
 const {snapshotIndex} = require('./utils')
 
 // does this test work with jsdom?
 const isBrowser = typeof window === 'object' &&
   (typeof global === 'undefined' || window === global)
+const isCypress = typeof cy === 'object'
 const isNode = !isBrowser
-const fs = isNode ? require('./file-system') : require('./browser-system')
+let fs
+if (isNode) {
+  fs = require('./file-system')
+} else if (isCypress) {
+  fs = require('./cypress-system')
+} else {
+  fs = require('./browser-system')
+}
 
 const shouldUpdate = Boolean(process.env.UPDATE)
-
-const snapshots = fs.loadSnapshots()
 
 function isTestFunctionName (name) {
   return ['it', 'test'].includes(name)
@@ -100,6 +105,18 @@ function getSpecFunction ({file, line}) {
   }
 }
 
+const cacheResult = fn => {
+  let result
+  return () => {
+    if (!result) {
+      result = fn()
+    }
+    return result
+  }
+}
+
+const loadSnapshots = cacheResult(fs.loadSnapshots)
+
 function findStoredValue ({file, specName, index = 0}) {
   const relativePath = fs.fromCurrentFolder(file)
   // console.log('relativePath', relativePath)
@@ -109,6 +126,7 @@ function findStoredValue ({file, specName, index = 0}) {
     return
   }
 
+  const snapshots = loadSnapshots()
   if (!snapshots[relativePath]) {
     return
   }
@@ -129,6 +147,7 @@ function storeValue ({file, specName, index, value}) {
   la(is.number(index), 'missing snapshot index', file, specName, index)
 
   const relativePath = fs.fromCurrentFolder(file)
+  const snapshots = fs.loadSnapshots()
   // console.log('relativePath', relativePath)
   if (!snapshots[relativePath]) {
     snapshots[relativePath] = {}
@@ -198,19 +217,16 @@ function snapshot (what, update) {
     debug('spec "%s" snapshot at line %d is #%d',
       specName, snapshotRelativeLine, index)
 
-    const storedValue = findStoredValue({file, specName, index})
-    if (update || storedValue === undefined) {
+    const expected = findStoredValue({file, specName, index})
+    if (update || expected === undefined) {
       storeValue({file, specName, index, value})
     } else {
-      debug('found snapshot for "%s", value', specName, storedValue)
-      const diffed = diff(storedValue, value)
-      if (diffed.changed) {
-        const text = diffed.text
-        debug('Test "%s" snapshot difference', specName)
-        const msg = `snapshot difference\n${text}`
-        console.log(msg)
-        throw new Error(msg)
-      }
+      debug('found snapshot for "%s", value', specName, expected)
+      fs.raiseIfDifferent({
+        value,
+        expected,
+        specName
+      })
     }
 
     return value

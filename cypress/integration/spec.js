@@ -2,13 +2,14 @@ const snapshot = require('../..')
 describe('snap-shot', () => {
   const url = __dirname + '/index.html'
 
-  beforeEach(snapshot.init)
+  before(snapshot.init)
 
   it('works without snapshot', () => {
     expect(cy).to.be.an('object')
   })
 
-  it('works', () => {
+  it.only('works', () => {
+    cy.log('calling snap shot')
     snapshot('foo')
   })
 
@@ -17,9 +18,9 @@ describe('snap-shot', () => {
       .title().should('equal', 'snap-shot')
 
     // same with snap-shot multiple lines
-    cy.title().then(title =>
+    cy.title().then(title => {
       snapshot(title)
-    )
+    })
   })
 
   it('works with arrow function', () => {
