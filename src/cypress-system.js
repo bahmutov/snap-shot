@@ -49,9 +49,9 @@ function init () {
         api.readFileSync = () => source
       })
       .then(() => {
-        return fetch('/__cypress/tests?p=' + filename)
+        return fetch('/__cypress/tests?p=./' + filename)
           .then(r => r.text())
-          .then(text => {
+          .then(function loadedText (text) {
             if (text.includes('BUNDLE_ERROR')) {
               return Promise.reject(new Error('not found'))
             }
