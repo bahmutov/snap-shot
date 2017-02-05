@@ -47,7 +47,10 @@ function getSpecFunction ({file, line}) {
   // TODO can be cached efficiently
   const source = fs.readFileSync(file, 'utf8')
   let foundSpecName, specSource, startLine
-  const options = {locations: true}
+  const options = {
+    locations: true,
+    sourceType: 'module'
+  }
 
   falafel(source, options, node => {
     if (foundSpecName) {
