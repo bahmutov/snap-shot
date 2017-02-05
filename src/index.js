@@ -8,11 +8,10 @@ const is = require('check-more-types')
 const crypto = require('crypto')
 const {snapshotIndex} = require('./utils')
 
-// does this test work with jsdom?
-const isBrowser = typeof window === 'object' &&
-  (typeof global === 'undefined' || window === global)
-const isCypress = typeof cy === 'object'
-const isNode = !isBrowser
+const isNode = Boolean(require('fs').existsSync)
+const isBrowser = !isNode
+const isCypress = isBrowser && typeof cy === 'object'
+
 let fs
 if (isNode) {
   fs = require('./file-system')
