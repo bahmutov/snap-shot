@@ -5,7 +5,8 @@
   "main": "module.js",
   "scripts": {
     "test": "babel-node spec.js",
-    "es5": "node -r ./add-log-line.js call-foo.js"
+    "es5": "node -r ./add-log-line.js call-foo.js",
+    "es6": "babel-node call-foo.js"
   },
   "keywords": [],
   "author": "",
