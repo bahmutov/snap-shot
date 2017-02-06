@@ -168,6 +168,14 @@ Run with `DEBUG=snap-shot` environment variable
 $ DEBUG=snap-shot mocha spec.js
 ```
 
+There are special projects that are setup to test this code in isolation
+as dependent projects.
+
+* [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
+  for testing `snap-shot` against Jest runner
+* [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
+  for testing against transpiled ES6 modules
+
 ## Related
 
 * [chai-jest-snapshot](https://github.com/suchipi/chai-jest-snapshot) if
