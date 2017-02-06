@@ -4,7 +4,8 @@
   "description": "",
   "main": "module.js",
   "scripts": {
-    "test": "babel-node spec.js"
+    "test": "babel-node spec.js",
+    "es5": "node -r ./add-log-line.js call-foo.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-preset-env": "^1.1.8",
-    "babel-register": "^6.22.0"
+    "babel-register": "^6.22.0",
+    "node-hook": "0.4.0"
   }
 }
