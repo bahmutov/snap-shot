@@ -1,3 +1,4 @@
+'use strict'
 const callsites = require('callsites')
 const relativeTo = require('path').relative.bind(null, process.cwd())
 module.exports = function foo () {
@@ -8,4 +9,5 @@ module.exports = function foo () {
     relativeTo(caller.getFileName()),
     caller.getLineNumber(),
     caller.getColumnNumber())
+  throw new Error('on purpose')
 }
