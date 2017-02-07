@@ -1,12 +1,12 @@
-module.exports[`handles multiple snapshots 1`] = 1
+exports[`handles multiple snapshots 1`] = 1
 
-module.exports[`handles multiple snapshots 2`] = 2
+exports[`handles multiple snapshots 2`] = 2
 
-module.exports[`handles multiple snapshots in if/else 1`] = 1
+exports[`handles multiple snapshots in if/else 1`] = 1
 
-module.exports[`multiple values 1`] = "first"
+exports[`multiple values 1`] = "first"
 
-module.exports[`multiple values 2`] = "second"
+exports[`multiple values 2`] = "second"
 
-module.exports[`multiple values 3`] = "third"
+exports[`multiple values 3`] = "third"
 

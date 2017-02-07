@@ -54,7 +54,7 @@ function saveSnapshots (specFile, snapshots) {
   Object.keys(snapshots).forEach(testName => {
     const value = snapshots[testName]
     const serialized = JSON.stringify(value, null, 2)
-    s += `module.exports[\`${testName}\`] = ${serialized}\n\n`
+    s += `exports[\`${testName}\`] = ${serialized}\n\n`
   })
   fs.writeFileSync(filename, s, 'utf8')
   return snapshots

@@ -1,4 +1,4 @@
-module.exports[`11558f62573f97cac76804be34258b1880295ee27ff38f280bb6b4aeaf94f456 1`] = 30
+exports[`11558f62573f97cac76804be34258b1880295ee27ff38f280bb6b4aeaf94f456 1`] = 30
 
-module.exports[`handles template literals ${secondTest} 1`] = 30
+exports[`handles template literals ${secondTest} 1`] = 30
 

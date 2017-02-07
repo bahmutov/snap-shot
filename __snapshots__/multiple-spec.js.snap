@@ -1,6 +1,0 @@
-module.exports[`handles multiple snapshots 1`] = 1
-
-module.exports[`handles multiple snapshots 2`] = 2
-
-module.exports[`handles multiple snapshots in if/else 1`] = 1
-
