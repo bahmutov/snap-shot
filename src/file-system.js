@@ -4,9 +4,12 @@ const fs = require('fs')
 const path = require('path')
 const diff = require('variable-diff')
 const debug = require('debug')('snap-shot')
+const la = require('lazy-ass')
+const is = require('check-more-types')
 
 const cwd = process.cwd()
 const fromCurrentFolder = path.relative.bind(null, cwd)
+const snapshotsFolder = '__snapshots__'
 
 function getFilename () {
   const folder = path.join(cwd, '.snap-shot')
@@ -18,8 +21,10 @@ function getFilename () {
   return filename
 }
 
-function loadSnapshots () {
-  const filename = getFilename()
+function loadSnapshots (specFile) {
+  la(is.unemptyString(specFile), 'missing specFile name', specFile)
+  const specName = path.basename(specFile)
+  const filename = fromCurrentFolder(snapshotsFolder, specName + '.snap')
   let snapshots = {}
   if (fs.existsSync(filename)) {
     snapshots = require(filename)
