@@ -1,0 +1,5 @@
+exports['compares just keys 1'] = [
+  "foo",
+  "bar"
+]
+

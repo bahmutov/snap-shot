@@ -180,9 +180,10 @@ function snapshot (what, update) {
   debug(`found spec name "${specName}" for line ${line} column ${column}`)
 
   if (!specName) {
-    console.error('Could not determine test for %s line %d column %d',
-      fs.fromCurrentFolder(file), line, column)
-    return what
+    const relativeName = fs.fromCurrentFolder(file)
+    const msg = `Could not determine test for ${relativeName}
+      line ${line} column ${column}`
+    throw new Error(msg)
   }
   la(is.unemptyString(specSource), 'could not get spec source from',
     file, 'line', line, 'column', column, 'named', specName)
