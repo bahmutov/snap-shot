@@ -15,4 +15,10 @@ describe('multiple snapshots', () => {
       snapshot(2) // second snapshot
     }
   })
+
+  it('multiple values', () => {
+    snapshot('first')
+    snapshot('second')
+    snapshot('third')
+  })
 })
