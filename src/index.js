@@ -195,6 +195,9 @@ function snapshot (what, update) {
   }
 
   if (!specName) {
+    console.error('Problem finding caller')
+    console.trace()
+
     const relativeName = fs.fromCurrentFolder(file)
     const msg = `Could not determine test for ${relativeName}
       line ${line} column ${column}`
