@@ -17,7 +17,8 @@ JUST a single assertion method to be used in BDD frameworks (Mocha, Jasmine)
 Also, I really really really wanted to keep API as simple and as "smart"
 as possible. Thus `snap-shot` tries to find the surrounding unit test name
 by inspecting its call site
-(using [callsites](https://github.com/sindresorhus/callsites#readme))
+(using [stack-sites](https://github.com/bahmutov/stack-sites) or
+[callsites](https://github.com/sindresorhus/callsites#readme))
 and parsing AST of the spec file
 (using [falafel](https://github.com/substack/node-falafel#readme)).
 
