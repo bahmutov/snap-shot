@@ -22,6 +22,9 @@ if (isNode) {
   fs = require('./browser-system')
 }
 
+// keeps track how many "snapshot" calls were there per test
+const snapshotsPerTest = {}
+
 const shouldUpdate = Boolean(process.env.UPDATE)
 
 function isTestFunctionName (name) {
@@ -105,10 +108,10 @@ function getSpecFunction ({file, line}) {
   }
 }
 
-const formKey = (specName, zeroIndex) =>
-  `${specName} ${zeroIndex + 1}`
+const formKey = (specName, oneIndex) =>
+  `${specName} ${oneIndex}`
 
-function findStoredValue ({file, specName, index = 0}) {
+function findStoredValue ({file, specName, index = 1}) {
   const relativePath = fs.fromCurrentFolder(file)
   if (shouldUpdate) {
     // let the new value replace the current value
@@ -126,10 +129,6 @@ function findStoredValue ({file, specName, index = 0}) {
     return
   }
 
-  // const values = snapshots[relativePath][specName]
-  // la(is.array(values), 'missing values for spec', specName)
-
-  // return values[index]
   return snapshots[key]
 }
 
@@ -137,7 +136,7 @@ function storeValue ({file, specName, index, value}) {
   la(value !== undefined, 'cannot store undefined value')
   la(is.unemptyString(file), 'missing filename', file)
   la(is.unemptyString(specName), 'missing spec name', specName)
-  la(is.number(index), 'missing snapshot index', file, specName, index)
+  la(is.positive(index), 'missing snapshot index', file, specName, index)
 
   const snapshots = fs.loadSnapshots(file)
   const key = formKey(specName, index)
@@ -209,16 +208,12 @@ function snapshot (what, update) {
   la(is.number(startLine), 'could not determine spec function start line',
     file, 'line', line, 'column', column, 'named', specName)
 
-  const snapshotRelativeLine = line - startLine
-
   const setOrCheckValue = value => {
-    // perfect opportunity to use Maybe
-    // find which snapshot (potentially) is this inside the spec file
-    const index = snapshotIndex(specSource, snapshotRelativeLine)
-    la(index >= 0, 'invalid snapshot index', index,
-      'from source\n', specSource, '\nrelative line', snapshotRelativeLine)
-    debug('spec "%s" snapshot at line %d is #%d',
-      specName, snapshotRelativeLine, index)
+    const index = snapshotIndex({specName, counters: snapshotsPerTest})
+    la(is.positive(index), 'invalid snapshot index', index,
+      'for\n', specName, '\ncounters', snapshotsPerTest)
+    debug('spec "%s" snapshot is #%d',
+      specName, index)
 
     const expected = findStoredValue({file, specName, index})
     if (update || expected === undefined) {

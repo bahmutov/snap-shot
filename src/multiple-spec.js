@@ -21,4 +21,10 @@ describe('multiple snapshots', () => {
     snapshot('second')
     snapshot('third')
   })
+
+  it('uses counter of snapshot calls', () => {
+    for (let k = 0; k < 10; k += 1) {
+      snapshot(`snap ${k}`)
+    }
+  })
 })

@@ -27,7 +27,7 @@ it('compares upper case string', () => {
 exports['compares upper case string 1'] = "FOO"
 */
 
-it.skip('compares multiple upper case values', () => {
+it('compares multiple upper case values', () => {
   upValue('foo')
   upValue('bar')
   upValue('baz')

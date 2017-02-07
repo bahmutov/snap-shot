@@ -1,3 +1,23 @@
+exports['uses counter of snapshot calls 1'] = "snap 0"
+
+exports['uses counter of snapshot calls 2'] = "snap 1"
+
+exports['uses counter of snapshot calls 3'] = "snap 2"
+
+exports['uses counter of snapshot calls 4'] = "snap 3"
+
+exports['uses counter of snapshot calls 5'] = "snap 4"
+
+exports['uses counter of snapshot calls 6'] = "snap 5"
+
+exports['uses counter of snapshot calls 7'] = "snap 6"
+
+exports['uses counter of snapshot calls 8'] = "snap 7"
+
+exports['uses counter of snapshot calls 9'] = "snap 8"
+
+exports['uses counter of snapshot calls 10'] = "snap 9"
+
 exports['handles multiple snapshots 1'] = 1
 
 exports['handles multiple snapshots 2'] = 2

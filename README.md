@@ -204,12 +204,14 @@ it('handles multiple snapshots', () => {
   snapshot(1)
   snapshot(2)
 })
+it('uses counter of snapshot calls', () => {
+  for (let k = 0; k < 10; k += 1) {
+    snapshot(`snap ${k}`)
+  }
+})
 ```
 
 See [src/multiple-spec.js](src/multiple-spec.js)
-
-**limitation** can only use name `snapshot(...)` in this case,
-issue [#20](https://github.com/bahmutov/snap-shot/issues/20)
 
 ## Debugging
 
