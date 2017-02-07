@@ -27,7 +27,7 @@ function loadSnaps (snapshotPath) {
 
 function fileForSpec (specFile) {
   const specName = path.basename(specFile)
-  const filename = path.join(snapshotsFolder, specName + '.snap')
+  const filename = path.join(snapshotsFolder, specName + '.snap-shot')
   return path.resolve(filename)
 }
 
