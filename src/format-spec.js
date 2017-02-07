@@ -20,6 +20,15 @@ const compose = (f, g) => x => f(g(x))
 const upperCase = x => x.toUpperCase()
 const upValue = compose(snapshot, upperCase)
 
-it.skip('compares upper case string', () => {
+it('compares upper case string', () => {
   upValue('foo')
+})
+/*
+exports['compares upper case string 1'] = "FOO"
+*/
+
+it.skip('compares multiple upper case values', () => {
+  upValue('foo')
+  upValue('bar')
+  upValue('baz')
 })

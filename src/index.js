@@ -46,6 +46,8 @@ function sha256 (string) {
 
 function getSpecFunction ({file, line}) {
   // TODO can be cached efficiently
+  la(is.unemptyString(file), 'missing file', file)
+  la(is.number(line), 'missing line number', line)
   const source = fs.readFileSync(file, 'utf8')
   let foundSpecName, specSource, startLine
   const options = {
@@ -175,9 +177,22 @@ function snapshot (what, update) {
     column: ${column}
   `
   debug(message)
-  const {specName, specSource, startLine} =
+  let {specName, specSource, startLine} =
     getSpecFunction({file, line, column})
-  debug(`found spec name "${specName}" for line ${line} column ${column}`)
+
+  // maybe the "snapshot" function was part of composition
+  // TODO handle arbitrary long chains by walking up to library code
+  if (!specName) {
+    const caller = sites[3]
+    const file = caller.filename
+    const line = caller.line
+    const column = caller.column
+    debug('trying to get snapshot from %s %d,%d', file, line, column)
+    const out = getSpecFunction({file, line, column})
+    specName = out.specName
+    specSource = out.specSource
+    startLine = out.startLine
+  }
 
   if (!specName) {
     const relativeName = fs.fromCurrentFolder(file)
@@ -185,6 +200,7 @@ function snapshot (what, update) {
       line ${line} column ${column}`
     throw new Error(msg)
   }
+  debug(`found spec name "${specName}" for line ${line} column ${column}`)
   la(is.unemptyString(specSource), 'could not get spec source from',
     file, 'line', line, 'column', column, 'named', specName)
   la(is.number(startLine), 'could not determine spec function start line',

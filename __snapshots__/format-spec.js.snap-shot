@@ -3,3 +3,7 @@ exports['compares just keys 1'] = [
   "bar"
 ]
 
+exports['compares upper case string 1'] = "FOO"
+
+exports['compares multiple upper case values 1'] = "FOO"
+

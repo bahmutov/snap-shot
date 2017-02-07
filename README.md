@@ -130,6 +130,42 @@ the tests using [grep feature](http://mochajs.org/#g---grep-pattern).
 $ UPDATE=1 mocha -g "test name pattern" *-spec.js
 ```
 
+## Format
+
+There is no magic in formatting snapshots. Just use any function or compose
+with `snapshot` before comparing. Both choices work
+
+```js
+const snapshot = require('snap-shot')
+it('compares just keys', () => {
+  const o = {
+    foo: Math.random(),
+    bar: Math.random()
+  }
+  snapshot(Object.keys(o))
+})
+// snapshot will be something like
+/*
+exports['compares just keys 1'] = [
+  "foo",
+  "bar"
+]
+*/
+
+const compose = (f, g) => x => f(g(x))
+const upperCase = x => x.toUpperCase()
+const upValue = compose(snapshot, upperCase)
+
+it('compares upper case string', () => {
+  upValue('foo')
+})
+/*
+exports['compares upper case string 1'] = "FOO"
+*/
+```
+
+See [src/format-spec.js](src/format-spec.js)
+
 ## Tests with dynamic names
 
 Sometimes tests are generated dynamically without hardcoded names. In this
