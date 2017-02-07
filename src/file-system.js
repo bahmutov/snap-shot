@@ -7,22 +7,31 @@ const debug = require('debug')('snap-shot')
 const la = require('lazy-ass')
 const is = require('check-more-types')
 const mkdirp = require('mkdirp')
+const vm = require('vm')
 
 const cwd = process.cwd()
 const fromCurrentFolder = path.relative.bind(null, cwd)
 const snapshotsFolder = fromCurrentFolder('__snapshots__')
 
 function loadSnaps (snapshotPath) {
-  const data = Object.create(null)
-  if (fs.existsSync(snapshotPath)) {
-    try {
-      delete require.cache[require.resolve(snapshotPath)]
-      /* eslint-disable no-useless-call */
-      Object.assign(data, require.call(null, snapshotPath))
-      /* eslint-enable no-useless-call */
-    } catch (e) {}
+  const full = require.resolve(snapshotPath)
+  if (!fs.existsSync(snapshotPath)) {
+    return {}
   }
-  return data
+
+  const sandbox = {
+    exports: {}
+  }
+  const source = fs.readFileSync(full, 'utf8')
+  try {
+    vm.runInNewContext(source, sandbox)
+    return sandbox.exports
+  } catch (e) {
+    console.error('Could not load file', full)
+    console.error(source)
+    console.error(e)
+    return {}
+  }
 }
 
 function fileForSpec (specFile) {
@@ -54,7 +63,7 @@ function saveSnapshots (specFile, snapshots) {
   Object.keys(snapshots).forEach(testName => {
     const value = snapshots[testName]
     const serialized = JSON.stringify(value, null, 2)
-    s += `exports[\`${testName}\`] = ${serialized}\n\n`
+    s += `exports['${testName}'] = ${serialized}\n\n`
   })
   fs.writeFileSync(filename, s, 'utf8')
   return snapshots

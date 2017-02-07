@@ -2,16 +2,14 @@
 
 const fs = require('fs')
 const path = require('path')
-const vm = require('vm')
 
 const source = fs.readFileSync(path.join(__dirname, 'spec.js.snap'), 'utf8')
 console.log('eval source')
 console.log(source)
 
+const vm = require('vm')
 const sandbox = {
-  module: {
-    exports: {}
-  }
+  exports: {}
 }
 vm.runInNewContext(source, sandbox)
-console.log(sandbox)
+console.log(sandbox.exports)
