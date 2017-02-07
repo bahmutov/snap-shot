@@ -1,4 +1,4 @@
-module.exports[`compares objects 0`] = {
+module.exports[`compares objects 1`] = {
   "inner": {
     "a": 10,
     "b": 20
@@ -6,13 +6,13 @@ module.exports[`compares objects 0`] = {
   "foo": "foo"
 }
 
-module.exports[`should not store undefined value 0`] = 42
+module.exports[`should not store undefined value 1`] = 42
 
-module.exports[`jest test 0`] = "jest value"
+module.exports[`jest test 1`] = "jest value"
 
-module.exports[`is 42 0`] = 42
+module.exports[`is 42 1`] = 42
 
-module.exports[`should be 42 0`] = 42
+module.exports[`should be 42 1`] = 42
 
-module.exports[`should be 80 0`] = 80
+module.exports[`should be 80 1`] = 80
 

@@ -103,6 +103,9 @@ function getSpecFunction ({file, line}) {
   }
 }
 
+const formKey = (specName, zeroIndex) =>
+  `${specName} ${zeroIndex + 1}`
+
 function findStoredValue ({file, specName, index = 0}) {
   const relativePath = fs.fromCurrentFolder(file)
   if (shouldUpdate) {
@@ -116,7 +119,7 @@ function findStoredValue ({file, specName, index = 0}) {
     return
   }
 
-  const key = `${specName} ${index}`
+  const key = formKey(specName, index)
   if (!(key in snapshots)) {
     return
   }
@@ -135,7 +138,7 @@ function storeValue ({file, specName, index, value}) {
   la(is.number(index), 'missing snapshot index', file, specName, index)
 
   const snapshots = fs.loadSnapshots(file)
-  const key = `${specName} ${index}`
+  const key = formKey(specName, index)
   snapshots[key] = value
 
   fs.saveSnapshots(file, snapshots)
