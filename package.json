@@ -72,8 +72,8 @@
     "license-checker": "8.0.3",
     "mocha": "3.2.0",
     "nsp": "2.6.2",
-    "pre-git": "3.12.0",
-    "semantic-release": "^6.3.2",
+    "pre-git": "3.12.1",
+    "semantic-release": "6.3.6",
     "standard": "8.6.0"
   },
   "dependencies": {
@@ -82,7 +82,7 @@
     "falafel": "2.0.0",
     "lazy-ass": "1.5.0",
     "mkdirp": "0.5.1",
-    "stack-sites": "1.0.0",
+    "stack-sites": "1.1.0",
     "variable-diff": "1.1.0"
   },
   "release": {
