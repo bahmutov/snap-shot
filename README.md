@@ -166,6 +166,18 @@ exports['compares upper case string 1'] = "FOO"
 
 See [src/format-spec.js](src/format-spec.js)
 
+### General advice
+
+Simple is better. Format the data and then call snapshot.
+
+```js
+it('works', () => {
+  const domNode = ...
+  const structure = formatHtml(domNode)
+  snapshot(structure)
+})
+```
+
 ## Tests with dynamic names
 
 Sometimes tests are generated dynamically without hardcoded names. In this
@@ -195,6 +207,9 @@ it('handles multiple snapshots', () => {
 ```
 
 See [src/multiple-spec.js](src/multiple-spec.js)
+
+**limitation** can only use name `snapshot(...)` in this case,
+issue [#20](https://github.com/bahmutov/snap-shot/issues/20)
 
 ## Debugging
 
