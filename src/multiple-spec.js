@@ -27,4 +27,12 @@ describe('multiple snapshots', () => {
       snapshot(`snap ${k}`)
     }
   })
+
+  // create dynamic tests
+  const names = ['test A', 'test B', 'test C']
+  names.forEach(name => {
+    it(name, () => {
+      snapshot(name + ' works')
+    })
+  })
 })

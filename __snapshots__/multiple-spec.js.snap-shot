@@ -30,3 +30,9 @@ exports['multiple values 2'] = "second"
 
 exports['multiple values 3'] = "third"
 
+exports['e7bd279a86d418d332c3100d927eaccc767f8ea6ae3c21e066b648eb8ae2cf2c 1'] = "test A works"
+
+exports['e7bd279a86d418d332c3100d927eaccc767f8ea6ae3c21e066b648eb8ae2cf2c 2'] = "test B works"
+
+exports['e7bd279a86d418d332c3100d927eaccc767f8ea6ae3c21e066b648eb8ae2cf2c 3'] = "test C works"
+
