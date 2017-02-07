@@ -1,7 +1,7 @@
 'use strict'
 
 const debug = require('debug')('snap-shot')
-const callsites = require('callsites')
+const stackSites = require('stack-sites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
@@ -168,10 +168,8 @@ function storeValue ({file, specName, index, value}) {
 const isPromise = x => is.object(x) && is.fn(x.then)
 
 function snapshot (what, update) {
-  // TODO for multiple values inside same spec
-  // we could use callsites[0] object
-  const sites = callsites()
-  if (sites.length < 2) {
+  const sites = stackSites()
+  if (sites.length < 3) {
     // hmm, maybe there is test (like we are inside Cypress)
     if (this && this.test && this.test.title) {
       debug('no callsite, but have test title "%s"', this.test.title)
@@ -182,14 +180,14 @@ function snapshot (what, update) {
   }
   debug('%d callsite(s)', sites.length)
 
-  const caller = sites[1]
-  const file = caller.getFileName()
-  const functionName = caller.getFunctionName()
-  const line = caller.getLineNumber()
-  const column = caller.getColumnNumber()
+  const caller = sites[2]
+  const file = caller.filename
+  // TODO report function name
+  // https://github.com/bahmutov/stack-sites/issues/1
+  const line = caller.line
+  const column = caller.column
   const message = `
     file: ${file}
-    function: ${functionName}
     line: ${line},
     column: ${column}
   `

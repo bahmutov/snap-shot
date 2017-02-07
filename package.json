@@ -77,18 +77,19 @@
     "standard": "8.6.0"
   },
   "dependencies": {
-    "callsites": "2.0.0",
     "check-more-types": "2.23.0",
     "debug": "2.6.0",
     "falafel": "2.0.0",
     "lazy-ass": "1.5.0",
+    "stack-sites": "1.0.0",
     "variable-diff": "1.1.0"
   },
   "release": {
     "verifyRelease": {
       "path": "dont-crack",
       "test-against": [
-        "https://github.com/bahmutov/snap-shot-jest-test"
+        "https://github.com/bahmutov/snap-shot-jest-test",
+        "https://github.com/bahmutov/snap-shot-modules-test"
       ]
     }
   }
