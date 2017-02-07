@@ -1,0 +1,18 @@
+exports['compares objects 1'] = {
+  "inner": {
+    "a": 10,
+    "b": 20
+  },
+  "foo": "foo"
+}
+
+exports['should not store undefined value 1'] = 42
+
+exports['jest test 1'] = "jest value"
+
+exports['is 42 1'] = 42
+
+exports['should be 42 1'] = 42
+
+exports['should be 80 1'] = 80
+

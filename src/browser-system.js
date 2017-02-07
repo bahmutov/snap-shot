@@ -2,7 +2,7 @@
 
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const callsites = require('callsites')
+const callsites = require('stack-sites')
 
 /* global localStorage, fetch */
 la(is.object(localStorage), 'missing localStorage')
@@ -33,7 +33,7 @@ function init () {
   // find out the source for all test -> this spec file
   const sites = callsites()
   la(sites.length, 'missing callsite')
-  const specFileUrl = sites[0].getFileName()
+  const specFileUrl = sites[1].filename
   la(is.webUrl(specFileUrl), 'missing spec url', specFileUrl)
   console.log('loading spec from', specFileUrl)
 

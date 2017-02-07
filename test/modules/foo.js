@@ -1,10 +1,8 @@
 'use strict'
 const callsites = require('callsites')
 const relativeTo = require('path').relative.bind(null, process.cwd())
-const read = require('fs').readFileSync
-const resolve = require('path').resolve
-const Module = require('module')
-export function foo () {
+const stackSites = require('stack-sites')
+module.exports = function foo () {
   console.log('inside foo')
   // who called me?
   const caller = callsites()[1]
@@ -26,5 +24,8 @@ export function foo () {
     }
   }
   transform(fakeModule, filename)
+  const callerSite = stackSites()[2]
+  console.log('My caller is %s line %d column %d',
+    callerSite.filename, callerSite.line, callerSite.column)
 }
 // use: const foo = require('./foo').foo

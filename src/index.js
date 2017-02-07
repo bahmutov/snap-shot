@@ -1,7 +1,8 @@
 'use strict'
 
 const debug = require('debug')('snap-shot')
-const callsites = require('callsites')
+const debugSave = require('debug')('save')
+const stackSites = require('stack-sites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
 const is = require('check-more-types')
@@ -45,6 +46,8 @@ function sha256 (string) {
 
 function getSpecFunction ({file, line}) {
   // TODO can be cached efficiently
+  la(is.unemptyString(file), 'missing file', file)
+  la(is.number(line), 'missing line number', line)
   const source = fs.readFileSync(file, 'utf8')
   let foundSpecName, specSource, startLine
   const options = {
@@ -70,11 +73,6 @@ function getSpecFunction ({file, line}) {
       specSource = node.arguments[1].source()
       startLine = node.loc.start.line
 
-      // console.log(node.source())
-      // console.log(node.arguments[0])
-
-      // console.log('found it')
-      // console.log(node.arguments[0].value)
       // TODO handle tests where just a single function argument was used
       // it(function testThis() {...})
       let specName
@@ -107,39 +105,32 @@ function getSpecFunction ({file, line}) {
   }
 }
 
-const cacheResult = fn => {
-  let result
-  return () => {
-    if (!result) {
-      result = fn()
-    }
-    return result
-  }
-}
-
-const loadSnapshots = cacheResult(fs.loadSnapshots)
+const formKey = (specName, zeroIndex) =>
+  `${specName} ${zeroIndex + 1}`
 
 function findStoredValue ({file, specName, index = 0}) {
   const relativePath = fs.fromCurrentFolder(file)
-  // console.log('relativePath', relativePath)
-
   if (shouldUpdate) {
     // let the new value replace the current value
     return
   }
 
-  const snapshots = loadSnapshots()
-  if (!snapshots[relativePath]) {
-    return
-  }
-  if (!(specName in snapshots[relativePath])) {
+  debug('loading snapshots from %s for spec %s', file, relativePath)
+  const snapshots = fs.loadSnapshots(file)
+  if (!snapshots) {
     return
   }
 
-  const values = snapshots[relativePath][specName]
-  la(is.array(values), 'missing values for spec', specName)
+  const key = formKey(specName, index)
+  if (!(key in snapshots)) {
+    return
+  }
 
-  return values[index]
+  // const values = snapshots[relativePath][specName]
+  // la(is.array(values), 'missing values for spec', specName)
+
+  // return values[index]
+  return snapshots[key]
 }
 
 function storeValue ({file, specName, index, value}) {
@@ -148,30 +139,22 @@ function storeValue ({file, specName, index, value}) {
   la(is.unemptyString(specName), 'missing spec name', specName)
   la(is.number(index), 'missing snapshot index', file, specName, index)
 
-  const relativePath = fs.fromCurrentFolder(file)
-  const snapshots = fs.loadSnapshots()
-  // console.log('relativePath', relativePath)
-  if (!snapshots[relativePath]) {
-    snapshots[relativePath] = {}
-  }
-  if (!snapshots[relativePath][specName]) {
-    snapshots[relativePath][specName] = []
-  }
-  snapshots[relativePath][specName][index] = value
-  fs.saveSnapshots(snapshots)
+  const snapshots = fs.loadSnapshots(file)
+  const key = formKey(specName, index)
+  snapshots[key] = value
+
+  fs.saveSnapshots(file, snapshots)
   debug('saved updated snapshot %d for spec %s', index, specName)
 
-  console.log('Saved for "%s" new snapshot %d value\n%s',
+  debugSave('Saved for "%s %d" snapshot\n%s',
     specName, index, JSON.stringify(value, null, 2))
 }
 
 const isPromise = x => is.object(x) && is.fn(x.then)
 
 function snapshot (what, update) {
-  // TODO for multiple values inside same spec
-  // we could use callsites[0] object
-  const sites = callsites()
-  if (sites.length < 2) {
+  const sites = stackSites()
+  if (sites.length < 3) {
     // hmm, maybe there is test (like we are inside Cypress)
     if (this && this.test && this.test.title) {
       debug('no callsite, but have test title "%s"', this.test.title)
@@ -182,27 +165,42 @@ function snapshot (what, update) {
   }
   debug('%d callsite(s)', sites.length)
 
-  const caller = sites[1]
-  const file = caller.getFileName()
-  const functionName = caller.getFunctionName()
-  const line = caller.getLineNumber()
-  const column = caller.getColumnNumber()
+  const caller = sites[2]
+  const file = caller.filename
+  // TODO report function name
+  // https://github.com/bahmutov/stack-sites/issues/1
+  const line = caller.line
+  const column = caller.column
   const message = `
     file: ${file}
-    function: ${functionName}
     line: ${line},
     column: ${column}
   `
   debug(message)
-  const {specName, specSource, startLine} =
+  let {specName, specSource, startLine} =
     getSpecFunction({file, line, column})
-  debug(`found spec name "${specName}" for line ${line} column ${column}`)
+
+  // maybe the "snapshot" function was part of composition
+  // TODO handle arbitrary long chains by walking up to library code
+  if (!specName) {
+    const caller = sites[3]
+    const file = caller.filename
+    const line = caller.line
+    const column = caller.column
+    debug('trying to get snapshot from %s %d,%d', file, line, column)
+    const out = getSpecFunction({file, line, column})
+    specName = out.specName
+    specSource = out.specSource
+    startLine = out.startLine
+  }
 
   if (!specName) {
-    console.error('Could not determine test for %s line %d column %d',
-      fs.fromCurrentFolder(file), line, column)
-    return what
+    const relativeName = fs.fromCurrentFolder(file)
+    const msg = `Could not determine test for ${relativeName}
+      line ${line} column ${column}`
+    throw new Error(msg)
   }
+  debug(`found spec name "${specName}" for line ${line} column ${column}`)
   la(is.unemptyString(specSource), 'could not get spec source from',
     file, 'line', line, 'column', column, 'named', specName)
   la(is.number(startLine), 'could not determine spec function start line',

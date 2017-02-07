@@ -17,7 +17,8 @@ JUST a single assertion method to be used in BDD frameworks (Mocha, Jasmine)
 Also, I really really really wanted to keep API as simple and as "smart"
 as possible. Thus `snap-shot` tries to find the surrounding unit test name
 by inspecting its call site
-(using [callsites](https://github.com/sindresorhus/callsites#readme))
+(using [stack-sites](https://github.com/bahmutov/stack-sites) or
+[callsites](https://github.com/sindresorhus/callsites#readme))
 and parsing AST of the spec file
 (using [falafel](https://github.com/substack/node-falafel#readme)).
 
@@ -36,16 +37,15 @@ it('is 42', () => {
 ```
 
 Run it first time with `mocha spec.js`.
-This will create snapshots JSON values file inside `.snap-shot`.
+This will create snapshots JSON values file inside
+`__snapshots__/spec.js.snap-shot`.
+In general this file should close to Jest format, but the file extension is
+different to avoid clashing with Jest persistence logic.
 
 ```sh
 $ mocha spec.js
-$ cat .snap-shot/snap-shot.json
-{
-  "spec.js": {
-    "is 42": 42
-  }
-}
+$ cat __snapshots__/spec.js.snap-shot
+module.exports[`is 42 1`] = 42
 ```
 
 Now modify the `spec.js` file
@@ -130,6 +130,42 @@ the tests using [grep feature](http://mochajs.org/#g---grep-pattern).
 $ UPDATE=1 mocha -g "test name pattern" *-spec.js
 ```
 
+## Format
+
+There is no magic in formatting snapshots. Just use any function or compose
+with `snapshot` before comparing. Both choices work
+
+```js
+const snapshot = require('snap-shot')
+it('compares just keys', () => {
+  const o = {
+    foo: Math.random(),
+    bar: Math.random()
+  }
+  snapshot(Object.keys(o))
+})
+// snapshot will be something like
+/*
+exports['compares just keys 1'] = [
+  "foo",
+  "bar"
+]
+*/
+
+const compose = (f, g) => x => f(g(x))
+const upperCase = x => x.toUpperCase()
+const upValue = compose(snapshot, upperCase)
+
+it('compares upper case string', () => {
+  upValue('foo')
+})
+/*
+exports['compares upper case string 1'] = "FOO"
+*/
+```
+
+See [src/format-spec.js](src/format-spec.js)
+
 ## Tests with dynamic names
 
 Sometimes tests are generated dynamically without hardcoded names. In this
@@ -168,13 +204,25 @@ Run with `DEBUG=snap-shot` environment variable
 $ DEBUG=snap-shot mocha spec.js
 ```
 
+If you want to see messages only when new values are stored use
+
+```sh
+$ DEBUG=save mocha spec.js
+save Saved for "is 42 1" snapshot 42
+```
+
 There are special projects that are setup to test this code in isolation
 as dependent projects.
 
-* [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
+* [![status][link1]][url1] [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
   for testing `snap-shot` against Jest runner
-* [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
+* [![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
   for testing against transpiled ES6 modules
+
+[link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
+[url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
+[link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
+[url2]: https://travis-ci.org/bahmutov/snap-shot-modules-test
 
 ## Related
 
