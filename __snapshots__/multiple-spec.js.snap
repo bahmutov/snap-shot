@@ -1,0 +1,6 @@
+module.exports[`handles multiple snapshots 0`] = 1
+
+module.exports[`handles multiple snapshots 1`] = 2
+
+module.exports[`handles multiple snapshots in if/else 0`] = 1
+

@@ -1,6 +1,7 @@
 'use strict'
 
 const debug = require('debug')('snap-shot')
+const debugSave = require('debug')('save')
 const stackSites = require('stack-sites')
 const falafel = require('falafel')
 const la = require('lazy-ass')
@@ -70,11 +71,6 @@ function getSpecFunction ({file, line}) {
       specSource = node.arguments[1].source()
       startLine = node.loc.start.line
 
-      // console.log(node.source())
-      // console.log(node.arguments[0])
-
-      // console.log('found it')
-      // console.log(node.arguments[0].value)
       // TODO handle tests where just a single function argument was used
       // it(function testThis() {...})
       let specName
@@ -107,39 +103,29 @@ function getSpecFunction ({file, line}) {
   }
 }
 
-// const cacheResult = fn => {
-//   let result
-//   return () => {
-//     if (!result) {
-//       result = fn()
-//     }
-//     return result
-//   }
-// }
-
-// const loadSnapshots = cacheResult(fs.loadSnapshots)
-
 function findStoredValue ({file, specName, index = 0}) {
   const relativePath = fs.fromCurrentFolder(file)
-  // console.log('relativePath', relativePath)
-
   if (shouldUpdate) {
     // let the new value replace the current value
     return
   }
 
+  debug('loading snapshots from %s for spec %s', file, relativePath)
   const snapshots = fs.loadSnapshots(file)
-  if (!snapshots[relativePath]) {
-    return
-  }
-  if (!(specName in snapshots[relativePath])) {
+  if (!snapshots) {
     return
   }
 
-  const values = snapshots[relativePath][specName]
-  la(is.array(values), 'missing values for spec', specName)
+  const key = `${specName} ${index}`
+  if (!(key in snapshots)) {
+    return
+  }
 
-  return values[index]
+  // const values = snapshots[relativePath][specName]
+  // la(is.array(values), 'missing values for spec', specName)
+
+  // return values[index]
+  return snapshots[key]
 }
 
 function storeValue ({file, specName, index, value}) {
@@ -148,20 +134,14 @@ function storeValue ({file, specName, index, value}) {
   la(is.unemptyString(specName), 'missing spec name', specName)
   la(is.number(index), 'missing snapshot index', file, specName, index)
 
-  const relativePath = fs.fromCurrentFolder(file)
   const snapshots = fs.loadSnapshots(file)
-  // console.log('relativePath', relativePath)
-  if (!snapshots[relativePath]) {
-    snapshots[relativePath] = {}
-  }
-  if (!snapshots[relativePath][specName]) {
-    snapshots[relativePath][specName] = []
-  }
-  snapshots[relativePath][specName][index] = value
-  fs.saveSnapshots(snapshots)
+  const key = `${specName} ${index}`
+  snapshots[key] = value
+
+  fs.saveSnapshots(file, snapshots)
   debug('saved updated snapshot %d for spec %s', index, specName)
 
-  console.log('Saved for "%s" new snapshot %d value\n%s',
+  debugSave('Saved for "%s %d" snapshot\n%s',
     specName, index, JSON.stringify(value, null, 2))
 }
 

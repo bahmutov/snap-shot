@@ -1,0 +1,4 @@
+module.exports[`promise to named function 0`] = 20
+
+module.exports[`snapshot can wrap promise 0`] = "promise resolved"
+

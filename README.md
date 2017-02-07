@@ -169,6 +169,13 @@ Run with `DEBUG=snap-shot` environment variable
 $ DEBUG=snap-shot mocha spec.js
 ```
 
+If you want to see messages only when new values are stored use
+
+```sh
+$ DEBUG=save mocha spec.js
+save Saved for "is 42 1" snapshot 42
+```
+
 There are special projects that are setup to test this code in isolation
 as dependent projects.
 
