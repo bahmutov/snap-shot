@@ -14,3 +14,9 @@ it(`handles template literals ${secondTest}`, () => {
   // primitive string
   snapshot(value)
 })
+
+const thirdTest = 'third test'
+it(thirdTest, function testThree () {
+  snapshot('foo')
+  snapshot('bar')
+})

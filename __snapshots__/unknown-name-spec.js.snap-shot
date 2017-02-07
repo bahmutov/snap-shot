@@ -2,3 +2,9 @@ exports['11558f62573f97cac76804be34258b1880295ee27ff38f280bb6b4aeaf94f456 1'] = 
 
 exports['handles template literals ${secondTest} 1'] = 30
 
+exports['983ea5a3066111b0cea0dabd6dd4472bcd7740c786d15a27e49c567c5626c932 1'] = "foo"
+
+exports['testThree 1'] = "foo"
+
+exports['testThree 2'] = "bar"
+

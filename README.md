@@ -191,6 +191,21 @@ it(testName, () => {
   // this is a test without hard coded name
   snapshot(value)
 })
+// snapshot file will have something like
+// exports['465fb... 1'] = 30
+```
+
+The best strategy in this case is to use meaningful name for the callback
+function
+
+```js
+const testName = 'variable test name (value 30)'
+const value = 30
+it(testName, function is30() {
+  snapshot(value)
+})
+// snapshot file will have something like
+// exports['is30 1'] = 30
 ```
 
 See [src/unknown-name-spec.js](src/unknown-name-spec.js)

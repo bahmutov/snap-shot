@@ -91,6 +91,14 @@ function getSpecFunction ({file, line}) {
         // TODO handle single function
       }
 
+      if (node.arguments.length === 2 &&
+        node.arguments[1].type === 'FunctionExpression' &&
+        node.arguments[1].id &&
+        is.unemptyString(node.arguments[1].id.name)) {
+        specName = node.arguments[1].id.name
+        debug('callback function has a name "%s"', specName)
+      }
+
       foundSpecName = specName
 
       if (!foundSpecName) {
