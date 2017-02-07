@@ -37,12 +37,14 @@ it('is 42', () => {
 ```
 
 Run it first time with `mocha spec.js`.
-This will create snapshots JSON values file inside `__snapshots__/spec.js.snap`.
-In general this file should close to Jest format.
+This will create snapshots JSON values file inside
+`__snapshots__/spec.js.snap-shot`.
+In general this file should close to Jest format, but the file extension is
+different to avoid clashing with Jest persistence logic.
 
 ```sh
 $ mocha spec.js
-$ cat __snapshots__/spec.js.snap
+$ cat __snapshots__/spec.js.snap-shot
 module.exports[`is 42 1`] = 42
 ```
 
