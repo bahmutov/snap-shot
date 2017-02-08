@@ -85,6 +85,9 @@
     "stack-sites": "1.1.0",
     "variable-diff": "1.1.0"
   },
+  "peerDependencies": {
+    "babel-core": "^6.0.0"
+  },
   "release": {
     "verifyRelease": {
       "path": "dont-crack",

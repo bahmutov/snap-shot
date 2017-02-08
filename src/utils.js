@@ -5,6 +5,8 @@ const is = require('check-more-types')
 const falafel = require('falafel')
 const crypto = require('crypto')
 const debug = require('debug')('snap-shot')
+// const Module = require('module')
+const path = require('path')
 
 function isTestFunctionName (name) {
   return ['it', 'test'].includes(name)
@@ -37,11 +39,52 @@ function snapshotIndex ({counters, specName}) {
   return counters[specName]
 }
 
+function shouldTranspile () {
+  const exists = require('fs').existsSync
+  if (!exists) {
+    return false
+  }
+  return exists(path.join(process.cwd(), '.babelrc'))
+}
+
+function transpile (filename) {
+  debug('transpiling %s', filename)
+  const babel = require('babel-core')
+  const {transformFileSync} = babel
+  const opts = {
+    sourceMaps: 'inline'
+  }
+  const {code} = transformFileSync('./Link.test.js', opts)
+  return code
+  // const transform = Module._extensions['.js']
+  // if (!transform) {
+  //   return text
+  // }
+  // debug('transpiling %s loaded code using %s', filename, transform.name)
+  // let result
+  // const fakeModule = {
+  //   _compile: source => {
+  //     console.log('transformed code')
+  //     console.log(source)
+  //     result = source
+  //   }
+  // }
+  // transform(fakeModule, filename)
+  // return result
+}
+
 function getSpecFunction ({fs, file, line}) {
   // TODO can be cached efficiently
   la(is.unemptyString(file), 'missing file', file)
   la(is.number(line), 'missing line number', line)
-  const source = fs.readFileSync(file, 'utf8')
+  const source = shouldTranspile()
+    ? transpile(file)
+    : fs.readFileSync(file, 'utf8')
+  // const text = fs.readFileSync(file, 'utf8')
+  // const source = transpile(text, file)
+
+  la(is.string(source), 'could not get source from', file)
+
   let foundSpecName, specSource, startLine
   const options = {
     locations: true,
