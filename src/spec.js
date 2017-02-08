@@ -28,6 +28,25 @@ it('compares objects', () => {
   snapshot(o)
 })
 
+it('strips functions', () => {
+  const {strip} = require('./utils')
+  const o = {
+    fn: () => {},
+    foo: 'foo'
+  }
+  snapshot(strip(o))
+})
+
+it('removes functions', () => {
+  const o = {
+    fn: () => {},
+    foo: 'foo'
+  }
+  // internally, o.fn will be stripped
+  // before comparing
+  snapshot(o)
+})
+
 it('should not store undefined value', () => {
   let value = 42
   snapshot(value)

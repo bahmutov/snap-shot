@@ -16,3 +16,11 @@ exports['should be 42 1'] = 42
 
 exports['should be 80 1'] = 80
 
+exports['removes functions 1'] = {
+  "foo": "foo"
+}
+
+exports['strips functions 1'] = {
+  "foo": "foo"
+}
+

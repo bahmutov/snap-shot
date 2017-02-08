@@ -131,7 +131,14 @@ function getSpecFunction ({fs, file, line}) {
   }
 }
 
+// make sure values in the object are "safe" to be serialized
+// and compared from loaded value
+function strip (o) {
+  return JSON.parse(JSON.stringify(o))
+}
+
 module.exports = {
   snapshotIndex,
-  getSpecFunction
+  getSpecFunction,
+  strip
 }

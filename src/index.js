@@ -6,7 +6,7 @@ const stackSites = require('stack-sites')
 const la = require('lazy-ass')
 const is = require('check-more-types')
 const utils = require('./utils')
-const {snapshotIndex} = utils
+const {snapshotIndex, strip} = utils
 
 const isNode = Boolean(require('fs').existsSync)
 const isBrowser = !isNode
@@ -130,13 +130,14 @@ function snapshot (what, update) {
   la(is.number(startLine), 'could not determine spec function start line',
     file, 'line', line, 'column', column, 'named', specName)
 
-  const setOrCheckValue = value => {
+  const setOrCheckValue = any => {
     const index = snapshotIndex({specName, counters: snapshotsPerTest})
     la(is.positive(index), 'invalid snapshot index', index,
       'for\n', specName, '\ncounters', snapshotsPerTest)
     debug('spec "%s" snapshot is #%d',
       specName, index)
 
+    const value = strip(any)
     const expected = findStoredValue({file, specName, index})
     if (update || expected === undefined) {
       storeValue({file, specName, index, value})

@@ -69,6 +69,9 @@ $ mocha spec.js
 are likely an edge case. If you disagree, open
 [an issue](https://github.com/bahmutov/snap-shot/issues) please.
 
+**Note** All values are saved as JSON, thus non-serializable values, like
+functions are stripped before comparison.
+
 ## Promises
 
 For asynchronous code, please have a function inside the spec before
@@ -106,6 +109,14 @@ test('my test', () => {
   snapshot(myValue)
 })
 ```
+
+## React + JSX
+
+If `snap-shot` finds `.babelrc` inside the current working folder, it will
+try transpiling loaded files using
+[babel-core](https://babeljs.io/docs/usage/api/) API. This makes it useful
+for testing React code. For full example see
+[Link.test.js](https://github.com/bahmutov/snap-shot-jest-test/blob/master/Link.test.js)
 
 ## Update snapshots
 
