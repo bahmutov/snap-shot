@@ -5,7 +5,6 @@ const is = require('check-more-types')
 const falafel = require('falafel')
 const crypto = require('crypto')
 const debug = require('debug')('snap-shot')
-// const Module = require('module')
 const path = require('path')
 
 function isTestFunctionName (name) {
@@ -56,21 +55,6 @@ function transpile (filename) {
   }
   const {code} = transformFileSync('./Link.test.js', opts)
   return code
-  // const transform = Module._extensions['.js']
-  // if (!transform) {
-  //   return text
-  // }
-  // debug('transpiling %s loaded code using %s', filename, transform.name)
-  // let result
-  // const fakeModule = {
-  //   _compile: source => {
-  //     console.log('transformed code')
-  //     console.log(source)
-  //     result = source
-  //   }
-  // }
-  // transform(fakeModule, filename)
-  // return result
 }
 
 function getSpecFunction ({fs, file, line}) {
@@ -80,8 +64,6 @@ function getSpecFunction ({fs, file, line}) {
   const source = shouldTranspile()
     ? transpile(file)
     : fs.readFileSync(file, 'utf8')
-  // const text = fs.readFileSync(file, 'utf8')
-  // const source = transpile(text, file)
 
   la(is.string(source), 'could not get source from', file)
 
