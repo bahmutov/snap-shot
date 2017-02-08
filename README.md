@@ -8,10 +8,9 @@
 [![semantic-release][semantic-image] ][semantic-url]
 [![js-standard-style][standard-image]][standard-url]
 
-* [![status][link1]][url1] [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
-  for testing `snap-shot` against Jest runner
-* [![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
-  for testing against transpiled ES6 modules
+[![status][link1]][url1] [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) - for testing `snap-shot` against Jest runner (React + JSX)
+
+[![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) - for testing against transpiled ES6 modules
 
 [link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
 [url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
