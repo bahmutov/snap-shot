@@ -25,7 +25,6 @@ it(thirdTest, function testThree () {
 })
 /* uses "testThree" name
 exports['testThree 1'] = "foo"
-
 exports['testThree 2'] = "bar"
 */
 
@@ -38,10 +37,10 @@ names.forEach(name => {
 })
 /* snapshot will be something like
 exports['7464af... 1'] = "test A works"
-
 exports['7464af... 2'] = "test B works"
-
 exports['7464af... 3'] = "test C works"
+
+equivalent to one test with 3 snapshots
 */
 
 // create tests on the fly with single name
@@ -53,8 +52,8 @@ tests.forEach(name => {
 })
 /* snapshot will use "testSomething" name
 exports['testSomething 1'] = "test A works"
-
 exports['testSomething 2'] = "test B works"
-
 exports['testSomething 3'] = "test C works"
+
+equivalent to one test with 3 snapshots
 */
