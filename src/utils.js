@@ -57,14 +57,7 @@ function transpile (filename) {
   return code
 }
 
-function getSpecFunction ({fs, file, line}) {
-  // TODO can be cached efficiently
-  la(is.unemptyString(file), 'missing file', file)
-  la(is.number(line), 'missing line number', line)
-  const source = shouldTranspile()
-    ? transpile(file)
-    : fs.readFileSync(file, 'utf8')
-
+function findInSource ({source, file, line}) {
   la(is.string(source), 'could not get source from', file)
 
   let foundSpecName, specSource, startLine
@@ -128,6 +121,31 @@ function getSpecFunction ({fs, file, line}) {
     specName: foundSpecName,
     specSource,
     startLine
+  }
+}
+
+function getSpecFunction ({fs, file, line}) {
+  // TODO can be cached efficiently
+  la(is.unemptyString(file), 'missing file', file)
+  la(is.number(line), 'missing line number', line)
+
+  let found
+  try {
+    const source = fs.readFileSync(file, 'utf8')
+    found = findInSource({source, file, line})
+  } catch (e) {
+    debug('problem finding without transpiling %s %d', file, line)
+  }
+
+  if (found) {
+    return found
+  }
+
+  // maybe we need transpiling?
+  if (shouldTranspile()) {
+    const source = transpile(file)
+    found = findInSource({source, file, line})
+    return found
   }
 }
 
