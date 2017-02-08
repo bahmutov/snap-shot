@@ -31,6 +31,8 @@ Install: `npm install --save-dev snap-shot`
 
 ```js
 const snapshot = require('snap-shot')
+// in ES6 code use
+import snapshot from 'snap-shot'
 it('is 42', () => {
   snapshot(42)
 })
