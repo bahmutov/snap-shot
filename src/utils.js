@@ -53,7 +53,7 @@ function transpile (filename) {
   const opts = {
     sourceMaps: 'inline'
   }
-  const {code} = transformFileSync('./Link.test.js', opts)
+  const {code} = transformFileSync(filename, opts)
   return code
 }
 
