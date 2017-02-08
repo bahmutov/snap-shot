@@ -2,9 +2,19 @@ exports['11558f62573f97cac76804be34258b1880295ee27ff38f280bb6b4aeaf94f456 1'] = 
 
 exports['handles template literals ${secondTest} 1'] = 30
 
-exports['983ea5a3066111b0cea0dabd6dd4472bcd7740c786d15a27e49c567c5626c932 1'] = "foo"
-
 exports['testThree 1'] = "foo"
 
 exports['testThree 2'] = "bar"
+
+exports['7464a8f45830ac78b6589a86dfacd4f080089054aee432fd0e339e5f691e94a8 1'] = "test A works"
+
+exports['7464a8f45830ac78b6589a86dfacd4f080089054aee432fd0e339e5f691e94a8 2'] = "test B works"
+
+exports['7464a8f45830ac78b6589a86dfacd4f080089054aee432fd0e339e5f691e94a8 3'] = "test C works"
+
+exports['testSomething 1'] = "test A works"
+
+exports['testSomething 2'] = "test B works"
+
+exports['testSomething 3'] = "test C works"
 
