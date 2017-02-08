@@ -94,7 +94,8 @@
       "path": "dont-crack",
       "test-against": [
         "https://github.com/bahmutov/snap-shot-jest-test",
-        "https://github.com/bahmutov/snap-shot-modules-test"
+        "https://github.com/bahmutov/snap-shot-modules-test",
+        "https://github.com/bahmutov/snap-shot-vue-test"
       ]
     }
   }

@@ -12,10 +12,14 @@
 
 [![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) - for testing against transpiled ES6 modules
 
+[![status][link3]][url3] [snap-shot-vue-test](https://github.com/bahmutov/snap-shot-vue-test) - for testing `snap-shot` inside Jest + Vue.js project
+
 [link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
 [url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
 [link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
 [url2]: https://travis-ci.org/bahmutov/snap-shot-modules-test
+[link3]: https://travis-ci.org/bahmutov/snap-shot-vue-test.svg?branch=master
+[url3]: https://travis-ci.org/bahmutov/snap-shot-vue-test
 
 ## Why
 
