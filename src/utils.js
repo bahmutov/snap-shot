@@ -50,8 +50,10 @@ function transpile (filename) {
   debug('transpiling %s', filename)
   const babel = require('babel-core')
   const {transformFileSync} = babel
+  // trick to keep the line numbers same as original code
   const opts = {
-    sourceMaps: 'inline'
+    sourceMaps: false,
+    retainLines: true
   }
   const {code} = transformFileSync(filename, opts)
   return code
@@ -71,49 +73,52 @@ function findInSource ({source, file, line}) {
       // already found
       return
     }
-    if (node.type === 'CallExpression' &&
-      isTestFunction(node.callee) &&
-      node.loc.start.line < line &&
-      node.loc.end.line > line) {
-      debug('found test function around snapshot at line %d', line)
+    // nested IFs make debugging easier
+    if (node.type === 'CallExpression') {
+      if (isTestFunction(node.callee)) {
+        if (node.loc.start.line < line &&
+          node.loc.end.line > line) {
+          debug('found test function around snapshot at line %d', line)
 
-      if (node.arguments.length !== 2) {
-        throw new Error('Cannot get test name for ' + node.source())
-      }
+          if (node.arguments.length !== 2) {
+            throw new Error('Cannot get test name for ' + node.source())
+          }
 
-      specSource = node.arguments[1].source()
-      startLine = node.loc.start.line
+          specSource = node.arguments[1].source()
+          startLine = node.loc.start.line
 
-      // TODO handle tests where just a single function argument was used
-      // it(function testThis() {...})
-      let specName
+          // TODO handle tests where just a single function argument was used
+          // it(function testThis() {...})
+          let specName
 
-      const nameNode = node.arguments[0]
-      if (nameNode.type === 'TemplateLiteral') {
-        specName = nameNode.source().replace(/`/g, '')
-        debug('template literal name "%s"', specName)
-      } else if (nameNode.type === 'Literal') {
-        specName = nameNode.value
-        debug('regular string name "%s", specName')
-      } else {
-        // TODO handle single function
-      }
+          const nameNode = node.arguments[0]
+          if (nameNode.type === 'TemplateLiteral') {
+            specName = nameNode.source().replace(/`/g, '')
+            debug('template literal name "%s"', specName)
+          } else if (nameNode.type === 'Literal') {
+            specName = nameNode.value
+            debug('regular string name "%s", specName')
+          } else {
+            // TODO handle single function
+          }
 
-      if (node.arguments.length === 2 &&
-        node.arguments[1].type === 'FunctionExpression' &&
-        node.arguments[1].id &&
-        is.unemptyString(node.arguments[1].id.name)) {
-        specName = node.arguments[1].id.name
-        debug('callback function has a name "%s"', specName)
-      }
+          if (node.arguments.length === 2 &&
+            node.arguments[1].type === 'FunctionExpression' &&
+            node.arguments[1].id &&
+            is.unemptyString(node.arguments[1].id.name)) {
+            specName = node.arguments[1].id.name
+            debug('callback function has a name "%s"', specName)
+          }
 
-      foundSpecName = specName
+          foundSpecName = specName
 
-      if (!foundSpecName) {
-        const hash = sha256(specSource)
-        debug('using source hash %s for found spec in %s line %d',
-          hash, file, line)
-        foundSpecName = hash
+          if (!foundSpecName) {
+            const hash = sha256(specSource)
+            debug('using source hash %s for found spec in %s line %d',
+              hash, file, line)
+            foundSpecName = hash
+          }
+        }
       }
     }
   })

@@ -3,6 +3,7 @@
 const debug = require('debug')('snap-shot')
 const debugSave = require('debug')('save')
 const stackSites = require('stack-sites')
+const callsites = require('callsites')
 const la = require('lazy-ass')
 const is = require('check-more-types')
 const utils = require('./utils')
@@ -109,6 +110,20 @@ function snapshot (what, update) {
     const line = caller.line
     const column = caller.column
     debug('trying to get snapshot from %s %d,%d', file, line, column)
+    const out = getSpecFunction({file, line, column})
+    specName = out.specName
+    specSource = out.specSource
+    startLine = out.startLine
+  }
+
+  if (!specName) {
+    // make the file was transpiled. Try callsites search
+    const sites = callsites()
+    const caller = sites[1]
+    const file = caller.getFileName()
+    const line = caller.getLineNumber()
+    const column = caller.getColumnNumber()
+    debug('trying to get snapshot from callsite %s %d,%d', file, line, column)
     const out = getSpecFunction({file, line, column})
     specName = out.specName
     specSource = out.specSource
