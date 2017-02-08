@@ -8,6 +8,16 @@
 [![semantic-release][semantic-image] ][semantic-url]
 [![js-standard-style][standard-image]][standard-url]
 
+* [![status][link1]][url1] [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
+  for testing `snap-shot` against Jest runner
+* [![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
+  for testing against transpiled ES6 modules
+
+[link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
+[url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
+[link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
+[url2]: https://travis-ci.org/bahmutov/snap-shot-modules-test
+
 ## Why
 
 I like [Jest snapshot](https://facebook.github.io/jest/blog/2016/07/27/jest-14.html)
@@ -257,17 +267,7 @@ save Saved for "is 42 1" snapshot 42
 ```
 
 There are special projects that are setup to test this code in isolation
-as dependent projects.
-
-* [![status][link1]][url1] [snap-shot-jest-test](https://github.com/bahmutov/snap-shot-jest-test) -
-  for testing `snap-shot` against Jest runner
-* [![status][link2]][url2] [snap-shot-modules-test](https://github.com/bahmutov/snap-shot-modules-test) -
-  for testing against transpiled ES6 modules
-
-[link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
-[url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
-[link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
-[url2]: https://travis-ci.org/bahmutov/snap-shot-modules-test
+as dependent projects, see above.
 
 ## Related
 
