@@ -131,6 +131,19 @@ try transpiling loaded files using
 for testing React code. For full example see
 [Link.test.js](https://github.com/bahmutov/snap-shot-jest-test/blob/master/Link.test.js)
 
+## Showing snapshots when saving
+
+You can view the snapshot before saving it
+
+```sh
+$ SHOW=1 npm test
+saving snapshot "spec name" for file ./src/valid-message-spec.js
+{ firstLine: 'break(log): new log format',
+  type: 'major',
+  scope: 'log',
+  subject: 'new log format' }
+```
+
 ## Update snapshots
 
 To update all saved values, run with `UPDATE=1` environment variable.
