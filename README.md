@@ -14,12 +14,16 @@
 
 [![status][link3]][url3] [snap-shot-vue-test](https://github.com/bahmutov/snap-shot-vue-test) - for testing `snap-shot` inside Jest + Vue.js project
 
+[![status][link4]][url4] [snap-shot-jsdom-test](https://github.com/bahmutov/snap-shot-jsdom-test) - for testing `snap-shot` using mock DOM adapter and element serialization
+
 [link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
 [url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
 [link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
 [url2]: https://travis-ci.org/bahmutov/snap-shot-modules-test
 [link3]: https://travis-ci.org/bahmutov/snap-shot-vue-test.svg?branch=master
 [url3]: https://travis-ci.org/bahmutov/snap-shot-vue-test
+[link4]: https://travis-ci.org/bahmutov/snap-shot-jsdom-test.svg?branch=master
+[url4]: https://travis-ci.org/bahmutov/snap-shot-jsdom-test
 
 ## Why
 
@@ -122,6 +126,14 @@ test('my test', () => {
   snapshot(myValue)
 })
 ```
+
+## DOM testing (via jsdom and [jsdom-global][jsdom-global])
+
+You can easily mock DOM and use snapshots (either in text or JSON format),
+see [snap-shot-jsdom-test](https://github.com/bahmutov/snap-shot-jsdom-test)
+project.
+
+[jsdom-global]: https://github.com/rstacruz/jsdom-global
 
 ## React + JSX
 
