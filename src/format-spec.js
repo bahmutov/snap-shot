@@ -1,4 +1,5 @@
 const snapshot = require('.')
+const {stripIndent} = require('common-tags')
 
 /* global it */
 it('compares just keys', () => {
@@ -39,5 +40,13 @@ it('compares multi line strings', () => {
     this is a line
     and a second line
     with number 42
+  `)
+})
+
+// multi line with stripped indent
+it('no indent', () => {
+  snapshot(stripIndent`
+    foo = 'bar'
+      baz = 42
   `)
 })

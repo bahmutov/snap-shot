@@ -71,6 +71,9 @@ function saveSnapshots (specFile, snapshots) {
 }
 
 const isMultiLineText = s => is.string(s) && s.includes('\n')
+const areStrings = (s, t) => is.string(s) && is.string(t)
+const compareAsStrings = (s, t) => areStrings(s, t) &&
+  (isMultiLineText(s) || isMultiLineText(t))
 
 function compareText (expected, value) {
   const textDiff = disparity.unified(expected, value)
@@ -86,8 +89,9 @@ function compareText (expected, value) {
 const compareObjects = diff
 
 function raiseIfDifferent ({value, expected, specName}) {
-  const diffed = isMultiLineText(expected)
-    ? compareText(expected, value) : compareObjects(expected, value)
+  const diffed = compareAsStrings(value, expected)
+    ? compareText(expected + '\n', value + '\n')
+    : compareObjects(expected, value)
   if (diffed.changed) {
     const text = diffed.text
     debug('Test "%s" snapshot difference', specName)

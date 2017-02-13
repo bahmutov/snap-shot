@@ -13,3 +13,5 @@ exports['compares multiple upper case values 3'] = "BAZ"
 
 exports['compares multi line strings 1'] = "\n    this is a line\n    and a second line\n    with number 42\n  "
 
+exports['no indent 1'] = "foo = 'bar'\n  baz = 42"
+
