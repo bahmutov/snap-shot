@@ -40,7 +40,9 @@ and parsing AST of the spec file
 (using [falafel](https://github.com/substack/node-falafel#readme)).
 
 Snapshot values are compared using
-[variable-diff](https://github.com/taylorhakes/variable-diff).
+[variable-diff](https://github.com/taylorhakes/variable-diff) (objects)
+and [disparity](https://github.com/millermedeiros/disparity)
+(multi line strings).
 
 ## Example
 

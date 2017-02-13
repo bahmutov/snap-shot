@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const diff = require('variable-diff')
+const disparity = require('disparity')
 const debug = require('debug')('snap-shot')
 const la = require('lazy-ass')
 const is = require('check-more-types')
@@ -69,8 +70,24 @@ function saveSnapshots (specFile, snapshots) {
   return snapshots
 }
 
+const isMultiLineText = s => is.string(s) && s.includes('\n')
+
+function compareText (expected, value) {
+  const textDiff = disparity.unified(expected, value)
+  if (!textDiff) {
+    return {changed: false}
+  }
+  return {
+    changed: true,
+    text: textDiff
+  }
+}
+
+const compareObjects = diff
+
 function raiseIfDifferent ({value, expected, specName}) {
-  const diffed = diff(expected, value)
+  const diffed = isMultiLineText(expected)
+    ? compareText(expected, value) : compareObjects(expected, value)
   if (diffed.changed) {
     const text = diffed.text
     debug('Test "%s" snapshot difference', specName)

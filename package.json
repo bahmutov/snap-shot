@@ -80,6 +80,7 @@
     "callsites": "2.0.0",
     "check-more-types": "2.23.0",
     "debug": "2.6.0",
+    "disparity": "2.0.0",
     "falafel": "2.0.0",
     "lazy-ass": "1.5.0",
     "mkdirp": "0.5.1",

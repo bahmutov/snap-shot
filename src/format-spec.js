@@ -32,3 +32,12 @@ it('compares multiple upper case values', () => {
   upValue('bar')
   upValue('baz')
 })
+
+// multi line comparison
+it('compares multi line strings', () => {
+  snapshot(`
+    this is a line
+    and a second line
+    with number 42
+  `)
+})
