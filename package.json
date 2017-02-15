@@ -98,7 +98,8 @@
         "https://github.com/bahmutov/snap-shot-jest-test",
         "https://github.com/bahmutov/snap-shot-modules-test",
         "https://github.com/bahmutov/snap-shot-vue-test",
-        "https://github.com/bahmutov/snap-shot-jsdom-test"
+        "https://github.com/bahmutov/snap-shot-jsdom-test",
+        "https://github.com/bahmutov/snap-shot-ava-test"
       ]
     }
   }
