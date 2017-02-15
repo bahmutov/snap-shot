@@ -16,6 +16,8 @@
 
 [![status][link4]][url4] [snap-shot-jsdom-test](https://github.com/bahmutov/snap-shot-jsdom-test) - for testing `snap-shot` using mock DOM adapter and element serialization
 
+[![status][link5]][url5] [snap-shot-ava-test](https://github.com/bahmutov/snap-shot-ava-test) - for testing how `snap-shot` works with [Ava][ava] test framework
+
 [link1]: https://travis-ci.org/bahmutov/snap-shot-jest-test.svg?branch=master
 [url1]: https://travis-ci.org/bahmutov/snap-shot-jest-test
 [link2]: https://travis-ci.org/bahmutov/snap-shot-modules-test.svg?branch=master
@@ -24,6 +26,9 @@
 [url3]: https://travis-ci.org/bahmutov/snap-shot-vue-test
 [link4]: https://travis-ci.org/bahmutov/snap-shot-jsdom-test.svg?branch=master
 [url4]: https://travis-ci.org/bahmutov/snap-shot-jsdom-test
+[link5]: https://travis-ci.org/bahmutov/snap-shot-ava-test.svg?branch=master
+[url5]: https://travis-ci.org/bahmutov/snap-shot-ava-test
+[ava]: https://github.com/avajs/ava
 
 ## Why
 
