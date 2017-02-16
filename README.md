@@ -134,6 +134,12 @@ test('my test', () => {
 })
 ```
 
+## Ava
+
+Mostly works, except for `async / await` tests, see
+[snap-shot-ava-test](https://github.com/bahmutov/snap-shot-ava-test)
+for the current status.
+
 ## DOM testing (via jsdom and [jsdom-global][jsdom-global])
 
 You can easily mock DOM and use snapshots (either in text or JSON format),
