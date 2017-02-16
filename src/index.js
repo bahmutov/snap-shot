@@ -27,6 +27,7 @@ const snapshotsPerTest = {}
 
 const shouldUpdate = Boolean(process.env.UPDATE)
 const shouldShow = Boolean(process.env.SHOW)
+const shouldDryRun = Boolean(process.env.DRY)
 
 function getSpecFunction ({file, line}) {
   return utils.getSpecFunction({file, line, fs})
@@ -66,17 +67,19 @@ function storeValue ({file, specName, index, value}) {
   const key = formKey(specName, index)
   snapshots[key] = value
 
-  if (shouldShow) {
+  if (shouldShow || shouldDryRun) {
     const relativeName = fs.fromCurrentFolder(file)
     console.log('saving snapshot "%s" for file %s', key, relativeName)
     console.log(value)
   }
 
-  fs.saveSnapshots(file, snapshots)
-  debug('saved updated snapshot %d for spec %s', index, specName)
+  if (!shouldDryRun) {
+    fs.saveSnapshots(file, snapshots)
+    debug('saved updated snapshot %d for spec %s', index, specName)
 
-  debugSave('Saved for "%s %d" snapshot\n%s',
-    specName, index, JSON.stringify(value, null, 2))
+    debugSave('Saved for "%s %d" snapshot\n%s',
+      specName, index, JSON.stringify(value, null, 2))
+  }
 }
 
 const isPromise = x => is.object(x) && is.fn(x.then)

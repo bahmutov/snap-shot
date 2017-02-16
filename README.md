@@ -158,7 +158,10 @@ for testing React code. For full example see
 
 ## Showing snapshots when saving
 
-You can view the snapshot before saving it
+If you just want to see what a new schema would be, without saving it,
+run the tests with `DRY=1 npm test` option.
+
+If you want to see the schema and save it, run the tests with `SHOW=1 npm test`
 
 ```sh
 $ SHOW=1 npm test
