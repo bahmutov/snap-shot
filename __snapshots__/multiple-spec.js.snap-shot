@@ -1,3 +1,15 @@
+exports['handles multiple snapshots 1'] = 1
+
+exports['handles multiple snapshots 2'] = 2
+
+exports['handles multiple snapshots in if/else 1'] = 1
+
+exports['multiple values 1'] = "first"
+
+exports['multiple values 2'] = "second"
+
+exports['multiple values 3'] = "third"
+
 exports['uses counter of snapshot calls 1'] = "snap 0"
 
 exports['uses counter of snapshot calls 2'] = "snap 1"
@@ -17,18 +29,6 @@ exports['uses counter of snapshot calls 8'] = "snap 7"
 exports['uses counter of snapshot calls 9'] = "snap 8"
 
 exports['uses counter of snapshot calls 10'] = "snap 9"
-
-exports['handles multiple snapshots 1'] = 1
-
-exports['handles multiple snapshots 2'] = 2
-
-exports['handles multiple snapshots in if/else 1'] = 1
-
-exports['multiple values 1'] = "first"
-
-exports['multiple values 2'] = "second"
-
-exports['multiple values 3'] = "third"
 
 exports['e7bd279a86d418d332c3100d927eaccc767f8ea6ae3c21e066b648eb8ae2cf2c 1'] = "test A works"
 
