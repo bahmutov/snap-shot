@@ -34,8 +34,6 @@ function getSpec ({file, line}) {
   return getSpecFunction({file, line, fs})
 }
 
-const isPromise = x => is.object(x) && is.fn(x.then)
-
 function snapshot (what, update) {
   const sites = stackSites()
   if (sites.length < 3) {
@@ -119,7 +117,7 @@ function snapshot (what, update) {
     return value
   }
 
-  if (isPromise(what)) {
+  if (is.promise(what)) {
     return what.then(setOrCheckValue)
   } else {
     return setOrCheckValue(what)
