@@ -319,6 +319,9 @@ as dependent projects, see above.
 
 * [chai-jest-snapshot](https://github.com/suchipi/chai-jest-snapshot) if
   you are using [Chai](http://chaijs.com/)
+* [schema-shot](https://github.com/bahmutov/schema-shot) - it is like snapshot
+  testing but for dynamic data
+  ([explanation](https://glebbahmutov.com/blog/schema-shot/))
 
 ### Small print
 
