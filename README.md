@@ -138,9 +138,17 @@ test('my test', () => {
 
 ## Ava
 
-Mostly works, except for `async / await` tests, see
+Should work (including `async / await` syntax), see
 [snap-shot-ava-test](https://github.com/bahmutov/snap-shot-ava-test)
 for the current status.
+
+```js
+import test from 'ava'
+import snapshot from 'snap-shot'
+test('concat strings', t => {
+  snapshot('f' + 'oo')
+})
+```
 
 ## DOM testing (via jsdom and [jsdom-global][jsdom-global])
 
