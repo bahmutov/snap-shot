@@ -60,7 +60,7 @@ function transpile (filename) {
 }
 
 function findInSource ({source, file, line}) {
-  la(is.string(source), 'could not get source from', file)
+  la(is.string(source), 'could not get source from', file, 'got', source)
 
   let foundSpecName, specSource, startLine
   const options = {
@@ -134,22 +134,41 @@ function getSpecFunction ({fs, file, line}) {
   la(is.unemptyString(file), 'missing file', file)
   la(is.number(line), 'missing line number', line)
 
+  const source = fs.readFileSync(file, 'utf8')
+
   let found
   try {
-    const source = fs.readFileSync(file, 'utf8')
     found = findInSource({source, file, line})
   } catch (e) {
     debug('problem finding without transpiling %s %d', file, line)
+    debug(e.message)
   }
 
   if (found) {
     return found
   }
 
+  // HACK if it is just "async / await" problem, remove them!
+  // could not get acorn / falafel to correctly parse "async / await" code
+  if (source.includes('async') || source.includes('await')) {
+    try {
+      debug('found async keyword, trying to remove it')
+      const removed = source.replace(/async|await/g, '     ')
+      found = findInSource({source: removed, file, line})
+    } catch (e) {
+      debug('tried removing async / await %s %d', file, line)
+      debug(e.message)
+    }
+  }
+  if (found) {
+    return found
+  }
+
   // maybe we need transpiling?
   if (shouldTranspile()) {
-    const source = transpile(file)
-    found = findInSource({source, file, line})
+    debug('should transpile and search')
+    const transpiled = transpile(file)
+    found = findInSource({source: transpiled, file, line})
     return found
   }
 }
