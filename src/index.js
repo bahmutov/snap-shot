@@ -42,6 +42,7 @@ function snapshot (what, update) {
       debug('no callsite, but have test title "%s"', this.test.title)
       return this.test.title
     }
+    debug(sites)
     const msg = 'Do not have caller function callsite'
     throw new Error(msg)
   }
