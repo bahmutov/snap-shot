@@ -58,6 +58,7 @@ it('compares multi line strings', () => {
 
 Changed text
 
+```js
 it('compares multi line strings', () => {
   snapshot(`
     this is a line
@@ -65,6 +66,7 @@ it('compares multi line strings', () => {
     with number 42
   `)
 })
+```
 
 Failed test message
 
