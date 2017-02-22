@@ -49,7 +49,7 @@ and parsing AST of the spec file
 Snapshot values are compared using
 [variable-diff](https://github.com/taylorhakes/variable-diff) (objects)
 and [disparity](https://github.com/millermedeiros/disparity)
-(multi line strings).
+(multi line strings). See [images/README.md](images/README.md) for screenshots.
 
 ## Example
 
