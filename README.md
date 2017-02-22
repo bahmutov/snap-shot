@@ -32,7 +32,7 @@
 
 ## Why
 
-Read [Snapshot testing the hardway](https://glebbahmutov.com/blog/snapshot-testing/)
+Read [Snapshot testing the hard way](https://glebbahmutov.com/blog/snapshot-testing/)
 
 I like [Jest snapshot](https://facebook.github.io/jest/blog/2016/07/27/jest-14.html)
 idea and want it without the rest of Jest testing framework. This module is
