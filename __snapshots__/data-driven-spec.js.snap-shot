@@ -1,0 +1,116 @@
+exports['finds single prime 1'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 6,
+      "expect": false
+    }
+  ]
+}
+
+exports['finds single prime 2'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 17,
+      "expect": true
+    }
+  ]
+}
+
+exports['finds single prime 3'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 73,
+      "expect": true
+    }
+  ]
+}
+
+exports['finds single prime 4'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 50,
+      "expect": false
+    }
+  ]
+}
+
+exports['finds multiple primes 1'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 1,
+      "expect": false
+    },
+    {
+      "given": 2,
+      "expect": true
+    },
+    {
+      "given": 3,
+      "expect": true
+    },
+    {
+      "given": 4,
+      "expect": false
+    },
+    {
+      "given": 5,
+      "expect": true
+    },
+    {
+      "given": 6,
+      "expect": false
+    },
+    {
+      "given": 7,
+      "expect": true
+    },
+    {
+      "given": 8,
+      "expect": false
+    },
+    {
+      "given": 9,
+      "expect": false
+    }
+  ]
+}
+
+exports['checks behavior of binary function add 1'] = {
+  "name": "add",
+  "behavior": [
+    {
+      "given": [
+        1,
+        2
+      ],
+      "expect": 3
+    },
+    {
+      "given": [
+        2,
+        2
+      ],
+      "expect": 4
+    },
+    {
+      "given": [
+        -5,
+        5
+      ],
+      "expect": 0
+    },
+    {
+      "given": [
+        10,
+        11
+      ],
+      "expect": 21
+    }
+  ]
+}
+

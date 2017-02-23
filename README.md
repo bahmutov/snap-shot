@@ -1,6 +1,6 @@
 # snap-shot
 
-> Jest-like snapshot feature for the rest of us
+> Jest-like snapshot feature for the rest of us + data-driven testing!
 
 [![NPM][npm-icon] ][npm-url]
 
@@ -50,6 +50,12 @@ Snapshot values are compared using
 [variable-diff](https://github.com/taylorhakes/variable-diff) (objects)
 and [disparity](https://github.com/millermedeiros/disparity)
 (multi line strings). See [images/README.md](images/README.md) for screenshots.
+
+This function also includes [data-driven][data-driven] testing mode,
+similar to [sazerac][sazerac], see "Data-driven testing" section below.
+
+[data-driven]: https://hackernoon.com/sazerac-data-driven-testing-for-javascript-e3408ac29d8c#.9s4ikt67d
+[sazerac]: https://github.com/mikec/sazerac
 
 ## Example
 
@@ -304,6 +310,104 @@ it('uses counter of snapshot calls', () => {
 ```
 
 See [src/multiple-spec.js](src/multiple-spec.js)
+
+## Data-driven testing
+
+Writing multiple input / output pairs for a function under test quickly
+becomes tedious. Luckily, you can test a function by providing multiple
+inputs and a single snapshot of function's *behavior* will be saved.
+
+```js
+// checks if n is prime
+const isPrime = n => ...
+it('tests prime', () => {
+  snapshot(isPrime, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+})
+```
+
+The saved snapshot file will have clear mapping between given input and
+produced result
+
+```js
+// snapshot file
+exports['tests prime 1'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 1,
+      "expect": false
+    },
+    {
+      "given": 2,
+      "expect": true
+    },
+    {
+      "given": 3,
+      "expect": true
+    },
+    {
+      "given": 4,
+      "expect": false
+    },
+    {
+      "given": 5,
+      "expect": true
+    },
+    ...
+  ]
+}
+```
+
+You can also test functions that expect multiple arguments by providing
+arrays of inputs.
+
+```js
+const add = (a, b) => a + b
+it('checks behavior of binary function add', () => {
+  snapshot(add, [1, 2], [2, 2], [-5, 5], [10, 11])
+})
+```
+
+Again, the snapshot file gives clear picture of the `add` behavior
+
+```js
+// snapshot file
+exports['checks behavior of binary function add 1'] = {
+  "name": "add",
+  "behavior": [
+    {
+      "given": [
+        1,
+        2
+      ],
+      "expect": 3
+    },
+    {
+      "given": [
+        2,
+        2
+      ],
+      "expect": 4
+    },
+    {
+      "given": [
+        -5,
+        5
+      ],
+      "expect": 0
+    },
+    {
+      "given": [
+        10,
+        11
+      ],
+      "expect": 21
+    }
+  ]
+}
+```
+
+See [src/data-driven-spec.js](src/data-driven-spec.js) for more examples.
 
 ## Debugging
 

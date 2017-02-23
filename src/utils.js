@@ -17,6 +17,7 @@ function snapshotIndex ({counters, specName}) {
 // make sure values in the object are "safe" to be serialized
 // and compared from loaded value
 function strip (o) {
+  la(!is.fn(o), 'cannot clean up functions!', o.name)
   return JSON.parse(JSON.stringify(o))
 }
 

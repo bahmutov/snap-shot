@@ -1,6 +1,6 @@
 {
   "name": "snap-shot",
-  "description": "Jest-like snapshot feature for the rest of us",
+  "description": "Jest-like snapshot feature for the rest of us + data-driven testing",
   "version": "0.0.0-development",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": "https://github.com/bahmutov/snap-shot/issues",
@@ -40,7 +40,9 @@
     "snapshot",
     "snapshots",
     "test",
-    "utility"
+    "utility",
+    "data-driven",
+    "behavior"
   ],
   "license": "MIT",
   "main": "src/",
