@@ -52,7 +52,8 @@ and [disparity](https://github.com/millermedeiros/disparity)
 (multi line strings). See [images/README.md](images/README.md) for screenshots.
 
 This function also includes [data-driven][data-driven] testing mode,
-similar to [sazerac][sazerac], see "Data-driven testing" section below.
+similar to [sazerac][sazerac], see [Data-driven testing](#data-driven-testing)
+section below.
 
 [data-driven]: https://hackernoon.com/sazerac-data-driven-testing-for-javascript-e3408ac29d8c#.9s4ikt67d
 [sazerac]: https://github.com/mikec/sazerac
