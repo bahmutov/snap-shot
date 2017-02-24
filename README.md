@@ -1,5 +1,7 @@
 # snap-shot
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bahmutov/snap-shot.svg)](https://greenkeeper.io/)
+
 > Jest-like snapshot feature for the rest of us + data-driven testing!
 
 [![NPM][npm-icon] ][npm-url]
