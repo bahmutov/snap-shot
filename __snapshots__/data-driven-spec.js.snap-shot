@@ -114,3 +114,30 @@ exports['checks behavior of binary function add 1'] = {
   ]
 }
 
+exports['works 1'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 10,
+      "expect": false
+    },
+    {
+      "given": 11,
+      "expect": true
+    }
+  ]
+}
+
+exports['works 2'] = {
+  "name": "add",
+  "behavior": [
+    {
+      "given": [
+        1,
+        2
+      ],
+      "expect": 3
+    }
+  ]
+}
+

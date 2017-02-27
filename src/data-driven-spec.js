@@ -25,4 +25,14 @@ describe('data-driven testing', () => {
   it('checks behavior of binary function add', () => {
     snapshot(add, [1, 2], [2, 2], [-5, 5], [10, 11])
   })
+
+  // a couple of tests with same name
+  // because data driven should add function name
+  it('works', () => {
+    snapshot(isPrime, 10, 11)
+  })
+
+  it('works', () => {
+    snapshot(add, [1, 2])
+  })
 })
