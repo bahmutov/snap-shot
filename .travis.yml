@@ -11,6 +11,8 @@ before_script:
   # - npm i -g cypress-cli
 script:
   - npm test
+  - echo Running unit tests again for sanity
+  - npm test
   - echo Skipping Cypress tests for now because of snapshots file load issue
   # - cypress ci
 after_success:

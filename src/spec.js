@@ -57,3 +57,7 @@ const test = it
 test('jest test', () => {
   snapshot('jest value')
 })
+
+it("is not afraid of single quote '", () => {
+  snapshot(44)
+})

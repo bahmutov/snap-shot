@@ -24,3 +24,5 @@ exports['should be 42 1'] = 42
 
 exports['should be 80 1'] = 80
 
+exports['is not afraid of single quote \' 1'] = 44
+
