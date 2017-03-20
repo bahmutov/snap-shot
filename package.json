@@ -82,7 +82,7 @@
   },
   "dependencies": {
     "callsites": "2.0.0",
-    "check-more-types": "2.23.0",
+    "check-more-types": "2.24.0",
     "debug": "2.6.2",
     "disparity": "2.0.0",
     "falafel": "2.0.0",
