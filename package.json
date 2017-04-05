@@ -78,7 +78,7 @@
     "nsp": "2.6.3",
     "pre-git": "3.14.0",
     "semantic-release": "6.3.6",
-    "standard": "8.6.0"
+    "standard": "9.0.2"
   },
   "dependencies": {
     "callsites": "2.0.0",
