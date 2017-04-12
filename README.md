@@ -182,13 +182,14 @@ run the tests with `DRY=1 npm test` option.
 
 If you want to see the schema and save it, run the tests with `SHOW=1 npm test`
 
-```sh
+```
 $ SHOW=1 npm test
 saving snapshot "spec name" for file ./src/valid-message-spec.js
 { firstLine: 'break(log): new log format',
   type: 'major',
   scope: 'log',
-  subject: 'new log format' }
+  subject: 'new log format' 
+}
 ```
 
 ## Update snapshots
@@ -215,6 +216,12 @@ the tests using [grep feature](http://mochajs.org/#g---grep-pattern).
 ```sh
 $ UPDATE=1 mocha -g "test name pattern" *-spec.js
 ```
+
+## CI
+
+**Note** most CIs (like Travis, Circle, GitLabCI) define environment variable `CI`, which
+we take into consideration as well. It makes no sense to allow saving snapshot on CI, thus if
+the `process.env.CI` is set, the snapshot MUST exist on disk.
 
 ## Format
 
@@ -422,7 +429,7 @@ $ DEBUG=snap-shot mocha spec.js
 
 If you want to see messages only when new values are stored use
 
-```sh
+```
 $ DEBUG=save mocha spec.js
 save Saved for "is 42 1" snapshot 42
 ```

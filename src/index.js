@@ -26,7 +26,8 @@ if (isNode) {
 const opts = {
   show: Boolean(process.env.SHOW),
   dryRun: Boolean(process.env.DRY),
-  update: Boolean(process.env.UPDATE)
+  update: Boolean(process.env.UPDATE),
+  ci: Boolean(process.env.CI)
 }
 
 const SNAP_SHOT_EXTENSION = '.snap-shot'
