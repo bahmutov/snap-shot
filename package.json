@@ -76,7 +76,7 @@
     "license-checker": "11.0.0",
     "mocha": "3.4.2",
     "nsp": "2.6.3",
-    "pre-git": "3.14.0",
+    "pre-git": "3.14.1",
     "semantic-release": "6.3.6",
     "standard": "10.0.2"
   },
