@@ -22,4 +22,13 @@ describe('strip', () => {
     const result = strip(o)
     la(!result.fn)
   })
+
+  it('gives good error for undefined', () => {
+    try {
+      strip()
+    } catch (e) {
+      la(e.message.includes('whitespace from undefined'),
+        'wrong error message\n' + e.message)
+    }
+  })
 })

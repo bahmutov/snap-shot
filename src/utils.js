@@ -2,6 +2,7 @@
 
 const la = require('lazy-ass')
 const is = require('check-more-types')
+const format = require('util').format
 
 function snapshotIndex ({counters, specName}) {
   la(is.object(counters), 'expected counters', counters)
@@ -17,8 +18,18 @@ function snapshotIndex ({counters, specName}) {
 // make sure values in the object are "safe" to be serialized
 // and compared from loaded value
 function strip (o) {
-  la(!is.fn(o), 'cannot clean up functions!', o.name)
-  return JSON.parse(JSON.stringify(o))
+  if (o === undefined) {
+    throw new Error('Cannot strip whitespace from undefined value')
+  }
+  if (is.fn(o)) {
+    la(false, 'cannot clean up functions!', o.name)
+  }
+  try {
+    return JSON.parse(JSON.stringify(o))
+  } catch (err) {
+    const msg = format('Cannot strip whitespace from %j\n%s', o, err.message)
+    throw new Error(msg)
+  }
 }
 
 module.exports = {
