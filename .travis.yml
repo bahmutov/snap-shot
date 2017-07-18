@@ -10,6 +10,7 @@ before_script:
   - npm prune
   # - npm i -g cypress-cli
 script:
+  - ./next-update-travis.sh
   - npm test
   - echo Running unit tests again for sanity
   - npm test
