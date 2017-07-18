@@ -79,7 +79,7 @@
     "mocha": "3.4.2",
     "next-update-travis": "1.4.0",
     "nsp": "2.6.3",
-    "pre-git": "3.14.0",
+    "pre-git": "3.14.1",
     "semantic-release": "6.3.6",
     "standard": "10.0.2"
   },
