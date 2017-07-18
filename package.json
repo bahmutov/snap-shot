@@ -9,6 +9,7 @@
       "commit-msg": "simple",
       "pre-commit": [
         "npm prune",
+        "npm i babel-core",
         "npm run deps",
         "npm test",
         "npm run ban"
