@@ -2,6 +2,11 @@
 
 > Jest-like snapshot feature for the rest of us + data-driven testing!
 
+**deprecated** please use [snap-shot-it][snap-shot-it] - it grabs test instance
+at runtime, avoiding looking at the source code and getting lost in the transpiled code.
+
+[snap-shot-it]: https://github.com/bahmutov/snap-shot-it
+
 [![NPM][npm-icon] ][npm-url]
 
 [![Build status][ci-image] ][ci-url]
