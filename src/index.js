@@ -9,7 +9,7 @@ const getSpecFunction = require('find-test-caller')
 const {strip} = require('./utils')
 const snapShotCore = require('snap-shot-core')
 const compare = require('./compare')
-const {isDataDriven, dataDriven} = require('./data-driven')
+const {isDataDriven, dataDriven} = require('@bahmutov/data-driven')
 
 const isNode = Boolean(require('fs').existsSync)
 const isBrowser = !isNode

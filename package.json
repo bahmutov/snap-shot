@@ -84,6 +84,7 @@
     "standard": "10.0.3"
   },
   "dependencies": {
+    "@bahmutov/data-driven": "1.0.0",
     "callsites": "2.0.0",
     "check-more-types": "2.24.0",
     "debug": "2.6.8",

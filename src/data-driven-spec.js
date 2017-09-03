@@ -1,5 +1,5 @@
 const snapshot = require('.')
-const {isDataDriven, dataDriven} = require('./data-driven')
+const {isDataDriven, dataDriven} = require('@bahmutov/data-driven')
 const la = require('lazy-ass')
 
 /* global describe, it */
