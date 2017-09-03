@@ -141,3 +141,21 @@ exports['works 2'] = {
   ]
 }
 
+exports['computes values 1'] = {
+  "name": "isPrime",
+  "behavior": [
+    {
+      "given": 1,
+      "expect": false
+    },
+    {
+      "given": 2,
+      "expect": true
+    },
+    {
+      "given": 3,
+      "expect": true
+    }
+  ]
+}
+

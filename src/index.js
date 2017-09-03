@@ -9,6 +9,7 @@ const getSpecFunction = require('find-test-caller')
 const {strip} = require('./utils')
 const snapShotCore = require('snap-shot-core')
 const compare = require('./compare')
+const {isDataDriven, dataDriven} = require('./data-driven')
 
 const isNode = Boolean(require('fs').existsSync)
 const isBrowser = !isNode
@@ -34,21 +35,6 @@ const SNAP_SHOT_EXTENSION = '.snap-shot'
 
 function getSpec ({file, line}) {
   return getSpecFunction({file, line, fs})
-}
-
-function dataDriven (fn, inputs) {
-  la(is.fn(fn), 'expected a function for data-driven test', fn)
-  la(is.array(inputs),
-    'expected list of inputs', inputs, 'to function', fn.name)
-  const name = fn.name
-  const behavior = inputs.map(given => {
-    const args = Array.isArray(given) ? given : [given]
-    return {
-      given,
-      expect: fn.apply(null, args)
-    }
-  })
-  return {name, behavior}
 }
 
 function snapshot (what, update) {
@@ -122,14 +108,8 @@ function snapshot (what, update) {
   la(is.number(startLine), 'could not determine spec function start line',
     file, 'line', line, 'column', column, 'named', specName)
 
-  // is this data-driven test? for example
-  // snapshot(isPrime, 1, 2, 3, 4, 5)
-  // or
-  // snapshot(add, [1, 2], [-5, 5], [4, 6])
-  if (is.fn(what) && arguments.length > 1) {
+  if (isDataDriven(arguments)) {
     debug(`data-driven test for ${what.name}`)
-    la(is.unemptyString(what.name),
-      'input function is missing name', what.toString())
     what = dataDriven(what, Array.from(arguments).slice(1))
   }
 

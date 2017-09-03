@@ -1,4 +1,6 @@
 const snapshot = require('.')
+const {isDataDriven, dataDriven} = require('./data-driven')
+const la = require('lazy-ass')
 
 /* global describe, it */
 describe('data-driven testing', () => {
@@ -10,6 +12,19 @@ describe('data-driven testing', () => {
   }
 
   const add = (a, b) => a + b
+
+  it('detects data inputs', () => {
+    const args = [isPrime, 1]
+    la(isDataDriven(args))
+    la(!isDataDriven(isPrime, 1))
+    la(!isDataDriven(isPrime))
+    la(!isDataDriven(isPrime, []))
+  })
+
+  it('computes values', () => {
+    const results = dataDriven(isPrime, [1, 2, 3])
+    snapshot(results)
+  })
 
   it('finds single prime', () => {
     snapshot(isPrime, 6)
