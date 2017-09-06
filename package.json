@@ -78,7 +78,7 @@
     "license-checker": "11.0.0",
     "mocha": "3.5.0",
     "next-update-travis": "1.7.1",
-    "nsp": "2.7.0",
+    "nsp": "2.8.0",
     "pre-git": "3.15.3",
     "semantic-release": "6.3.6",
     "standard": "10.0.3"
