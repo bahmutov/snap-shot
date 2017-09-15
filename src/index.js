@@ -38,6 +38,10 @@ function getSpec ({file, line}) {
 }
 
 function snapshot (what, update) {
+  if (update) {
+    Object.assign(opts, { update: update })
+  }
+
   const sites = stackSites()
   if (sites.length < 3) {
     // hmm, maybe there is test (like we are inside Cypress)
