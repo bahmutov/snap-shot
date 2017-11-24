@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.1",
-    "common-tags": "1.4.0",
+    "common-tags": "1.5.0",
     "dependency-check": "2.9.1",
     "deps-ok": "1.2.1",
     "dont-crack": "1.2.1",
