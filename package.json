@@ -68,7 +68,7 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "devDependencies": {
-    "ban-sensitive-files": "1.9.1",
+    "ban-sensitive-files": "1.9.2",
     "common-tags": "1.5.1",
     "dependency-check": "2.9.1",
     "deps-ok": "1.2.1",
